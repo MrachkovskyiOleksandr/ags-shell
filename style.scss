@@ -1,0 +1,278 @@
+// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
+$fg-color: #{"@theme_fg_color"};
+$bg-color: #{"@theme_bg_color"};
+
+@import "./colors.scss";
+
+* {
+  all: unset;
+  // border: 1px solid red;
+}
+
+window.Bar {
+  background: transparent;
+  color: $mint;
+
+  font-family: "Adwaita Sans Nerd Font";
+  font-size: 16px;
+  font-weight: bold;
+
+  .center-box {
+    background-color: black;
+    border: 1px solid $blue;
+    border-top: none;
+    border-radius: 0 0 11px 11px;
+
+    min-width: 500px;
+
+    padding: 4px 10px 4px;
+
+    .network-box,
+    .battery-box,
+    .bluetooth-box,
+    .audio-box {
+      padding: 0 4px;
+    }
+
+    popover {
+      background-color: $bg0;
+      border: 1px solid $blue;
+      border-radius: 12px;
+      padding: 6px;
+      margin-top: 15px;
+
+      min-width: 300px;
+
+      .header {
+        margin: 0 6px 6px;
+        padding: 2px 4px;
+
+        padding-bottom: 6px;
+        border-bottom: 2px solid $blue;
+
+        .refresh-btn {
+          border-left: 2px solid $blue;
+          font-size: 14px;
+
+          padding-left: 15px;
+          margin-left: 15px;
+
+          box {
+            &:hover {
+              opacity: 0.7;
+              transition: 0.1s all linear;
+            }
+          }
+        }
+      }
+
+      .volume {
+        border: none;
+      }
+
+      .wifi-list-item,
+      .bluetooth-list-item {
+        padding: 2px 4px;
+
+        &:hover {
+          background: $blue;
+          border-radius: 7px;
+          color: $bg0;
+          transition: 0.1s all linear;
+        }
+
+        .frequency-label,
+        .battery-label {
+          color: $aqua;
+          font-size: 13px;
+        }
+
+        .inner-btn {
+          // border: 1px solid $bg0;
+          border-radius: 5px;
+          padding: 0 4px;
+          color: $mint;
+          background: $bg0;
+
+          &.hovered {
+            background: $blue;
+            color: $bg0;
+          }
+        }
+      }
+      .wifi-list-item.no-hover {
+        background: transparent;
+        color: $mint;
+      }
+    }
+
+    scale {
+      min-width: 200px;
+
+      trough {
+        background: $bg3;
+        border-radius: 7px;
+        min-height: 20px;
+      }
+
+      trough highlight {
+        background-color: $blue;
+        border-radius: 7px;
+
+        &:hover {
+          opacity: 0.7;
+          transition: 0.1s all linear;
+        }
+      }
+
+      trough slider {
+        display: none;
+      }
+    }
+
+    switch {
+      min-width: 48px;
+      min-height: 24px;
+      border-radius: 12px;
+      border: none;
+      background-color: $aqua;
+
+      &:checked {
+        background-color: $blue;
+
+        > slider {
+          background: $bg0;
+        }
+      }
+
+      &:hover {
+        opacity: 0.8;
+        transition: 0.1s all linear;
+      }
+
+      > slider {
+        min-width: 20px;
+        min-height: 20px;
+        margin: 2px;
+        border-radius: 50%;
+        background-color: $blue;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .spinning {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
+  calendar {
+    button,
+    label {
+      &:hover {
+        background-color: $blue;
+        border-radius: 5px;
+        color: $bg0;
+      }
+    }
+
+    .other-month {
+      color: $bg2;
+    }
+
+    .today {
+      background-color: $blue;
+      border-radius: 5px;
+      color: $bg0;
+    }
+  }
+
+  tooltip {
+    background-color: $bg0;
+    border: 1px solid $blue;
+    border-radius: 12px;
+    padding: 6px;
+    margin-top: 15px;
+  }
+}
+
+.main-window {
+  // min-height: 300px;
+  // min-width: 300px;
+
+  background-color: $bg0;
+  border: 1px solid $blue;
+  border-radius: 12px;
+  padding: 12px;
+
+  color: $mint;
+  font-family: "Adwaita Sans Nerd Font";
+  font-size: 16px;
+  font-weight: bold;
+
+  .header {
+    border-bottom: 2px solid $blue;
+    padding-bottom: 6px;
+  }
+
+  .password-box {
+    margin-top: -11px;
+
+    entry {
+      color: $mint;
+      border-bottom: 1px solid $blue;
+      padding: 6px;
+      min-width: 200px;
+
+      margin: 11px 0 10px 0;
+    }
+
+    button.toggle {
+      min-height: 0;
+      min-width: 0;
+      padding: 4px 12px 4px 6px;
+      margin: 0;
+
+      color: transparent;
+
+      border-radius: 12px;
+
+      label {
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+      }
+
+      &:hover {
+        background: transparent;
+        // background: $blue;
+      }
+
+      &:checked {
+        background: transparent;
+        // background: $blue;
+        color: $blue;
+        // color: $bg0;
+      }
+    }
+  }
+
+  button {
+    border: 1px solid $blue;
+    border-radius: 12px;
+    padding: 6px 10px;
+
+    &:hover {
+      background: $blue;
+      color: $bg0;
+    }
+  }
+}
