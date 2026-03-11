@@ -3,7 +3,7 @@ import app from "ags/gtk4/app"
 import AstalNetwork from "gi://AstalNetwork"
 
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { createState } from "ags"
+import { createBinding, createState } from "ags"
 import { execAsync } from "ags/process"
 
 const [visible, setVisible] = createState(false)
@@ -12,6 +12,9 @@ const [currentAp, setCurrentAp] = createState<AstalNetwork.AccessPoint | null>(
 )
 const [password, setPassword] = createState("")
 const [showPassword, setShow] = createState(false)
+
+const network = AstalNetwork.get_default()
+const wifi = network.wifi
 
 export const openNcgui = async (ap: AstalNetwork.AccessPoint) => {
   setCurrentAp(ap)
@@ -48,6 +51,16 @@ export const closeNcgui = () => {
 }
 
 export default function ncgui() {
+  const isConnecting = createBinding(wifi, "state").as(
+    (s) =>
+      (s === AstalNetwork.DeviceState.PREPARE ||
+        s === AstalNetwork.DeviceState.CONFIG ||
+        s === AstalNetwork.DeviceState.NEED_AUTH ||
+        s === AstalNetwork.DeviceState.IP_CONFIG ||
+        s === AstalNetwork.DeviceState.IP_CHECK) &&
+      wifi.activeAccessPoint === currentAp(),
+  )
+
   return (
     <window
       visible={visible}
@@ -65,15 +78,29 @@ export default function ncgui() {
         self.add_controller(key)
       }}
     >
-      <box orientation={Gtk.Orientation.VERTICAL} spacing={8}>
-        <label
+      <box orientation={Gtk.Orientation.VERTICAL} spacing={8} hexpand>
+        <box
           cssClasses={["header"]}
-          label={currentAp.as((ap) => ap?.ssid ?? "")}
-        />
-        <box cssClasses={["password-box"]} spacing={6} orientation={Gtk.Orientation.HORIZONTAL}>
-          <label halign={Gtk.Align.START} label={"Password"}></label>
+          orientation={Gtk.Orientation.HORIZONTAL}
+          halign={Gtk.Align.CENTER}
+          spacing={15}
+        >
+          <label label={currentAp.as((ap) => ap?.ssid ?? "")} />
+          <label
+            cssClasses={["frequency-label"]}
+            label={currentAp.as(
+              (ap) => `(${((ap?.frequency ?? 0) / 1000).toFixed(1)} GHz)`,
+            )}
+          />
+        </box>
+        <box
+          cssClasses={["password-box"]}
+          spacing={6}
+          orientation={Gtk.Orientation.HORIZONTAL}
+          halign={Gtk.Align.START}
+        >
+          <label label={"Password"}></label>
           <entry
-            halign={Gtk.Align.START}
             hexpand
             text={password}
             visibility={showPassword}
@@ -83,17 +110,33 @@ export default function ncgui() {
           <togglebutton
             active={showPassword}
             onToggled={() => setShow((v) => !v)}
-            halign={Gtk.Align.END}
             valign={Gtk.Align.CENTER}
           >
-            <label label={""}></label>
+            <image
+              iconName={"eye-icon-symbolic"}
+              cursor={Gdk.Cursor.new_from_name("pointer", null)}
+            />
           </togglebutton>
         </box>
         <box spacing={6} orientation={Gtk.Orientation.HORIZONTAL}>
-          <button onClicked={closeNcgui} halign={Gtk.Align.END} hexpand>
+          <label
+            label={"Connecting..."}
+            visible={isConnecting}
+            cssClasses={["connecting"]}
+          ></label>
+          <button
+            onClicked={closeNcgui}
+            halign={Gtk.Align.END}
+            hexpand
+            cursor={Gdk.Cursor.new_from_name("pointer", null)}
+          >
             <label label="Cancel" />
           </button>
-          <button halign={Gtk.Align.END} onClicked={connectNcgui}>
+          <button
+            halign={Gtk.Align.END}
+            onClicked={connectNcgui}
+            cursor={Gdk.Cursor.new_from_name("pointer", null)}
+          >
             <label label="Connect" />
           </button>
         </box>

@@ -54,14 +54,14 @@ export default function Bluetooth() {
                   }
                 }}
               >
-                <box halign={Gtk.Align.END}>
+                <box spacing={6}>
                   <image
-                    iconName="view-refresh-symbolic"
+                    iconName="refresh-icon-symbolic"
                     cssClasses={createBinding(adapter, "discovering").as((s) =>
                       s ? ["spinning"] : [],
                     )}
                   />
-                  <label label=" Refresh" />
+                  <label label="Refresh" />
                 </box>
               </button>
             </box>

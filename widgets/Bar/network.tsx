@@ -84,14 +84,14 @@ export default function Wireless() {
                       cursor={Gdk.Cursor.new_from_name("pointer", null)}
                       onClicked={() => wifi.scan()}
                     >
-                      <box halign={Gtk.Align.END}>
+                      <box spacing={6}>
                         <image
-                          iconName="view-refresh-symbolic"
+                          iconName="refresh-icon-symbolic"
                           cssClasses={createBinding(wifi, "scanning").as((s) =>
                             s ? ["spinning"] : [],
                           )}
                         />
-                        <label label=" Refresh" />
+                        <label label="Refresh" />
                       </box>
                     </button>
                   </box>
@@ -130,11 +130,10 @@ export default function Wireless() {
                             self.add_controller(motion)
                           }}
                         >
-                          <box>
+                          <box hexpand>
                             <box
                               spacing={4}
                               orientation={Gtk.Orientation.HORIZONTAL}
-                              halign={Gtk.Align.START}
                               hexpand
                             >
                               <image
@@ -148,6 +147,8 @@ export default function Wireless() {
                                 tooltipText={createBinding(ap, "ssid")}
                               />
                               <label
+                                hexpand
+                                halign={Gtk.Align.START}
                                 cssClasses={["frequency-label"]}
                                 label={createBinding(ap, "frequency").as(
                                   (f) => `(${(f / 1000).toFixed(1)} GHz)`,
@@ -160,12 +161,17 @@ export default function Wireless() {
                                   "activeAccessPoint",
                                 )((active) => active === ap)}
                               />
+
+                              <image
+                                visible={createBinding(ap, "requires_password")}
+                                iconName="network-wireless-encrypted-symbolic"
+                              ></image>
                             </box>
 
                             {/* Edit button */}
                             <box
                               halign={Gtk.Align.END}
-                              visible={itemHovered}
+                              visible
                               cssClasses={editHovered.as((h) =>
                                 h ? ["inner-btn", "hovered"] : ["inner-btn"],
                               )}
@@ -193,7 +199,11 @@ export default function Wireless() {
                                 self.add_controller(gesture)
                               }}
                             >
-                              <label label="Edit" />
+                              <image
+                                iconName={"pencil-edit-icon-symbolic"}
+                                valign={Gtk.Align.CENTER}
+                                halign={Gtk.Align.CENTER}
+                              />
                             </box>
                           </box>
                         </button>
