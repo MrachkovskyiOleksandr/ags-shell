@@ -19,7 +19,7 @@ window.Bar {
 
   .center-box {
     background-color: black;
-    border: 1px solid $primary;
+    border: 1px solid $outline;
     border-top: none;
     border-radius: 0 0 11px 11px;
 
@@ -34,7 +34,7 @@ window.Bar {
     }
 
     popover {
-      background-color: $background;
+      background-color: $surface_container_low;
       border: 1px solid $primary;
       border-radius: 12px;
       padding: 6px;
@@ -47,10 +47,10 @@ window.Bar {
         padding: 2px 4px;
 
         padding-bottom: 6px;
-        border-bottom: 2px solid $primary;
+        border-bottom: 2px solid $outline_variant;
 
         .refresh-btn {
-          border-left: 2px solid $primary;
+          border-left: 2px solid $outline_variant;
           font-size: 14px;
 
           padding-left: 15px;
@@ -58,7 +58,7 @@ window.Bar {
 
           box {
             image {
-              color: $secondary;
+              color: $primary;
             }
 
             &:hover {
@@ -83,31 +83,50 @@ window.Bar {
           // border: 1px solid red;
         }
 
-        &:hover {
-          background: $primary;
-          border-radius: 7px;
-          color: $background;
-
-          transition: 0.1s all linear;
-        }
-
-        .frequency-label,
-        .battery-label {
-          color: $secondary_container;
-          font-size: 13px;
-        }
-
         .inner-btn {
-          color: $background;
+          color: transparent;
           transition: 0.1s all linear;
           margin-left: 10px;
 
-          -gtk-icon-size: 20px;
+          -gtk-icon-size: 18px;
 
           &.hovered {
             color: $secondary;
             transition: 0.1s all linear;
           }
+        }
+
+        &:hover {
+          background: $primary_container;
+          border-radius: 7px;
+          color: $on_primary_container;
+
+          transition: 0.1s all linear;
+
+          .inner-btn {
+            color: $on_primary_container;
+            transition: 0.1s all linear;
+          }
+        }
+        &.active {
+          background: $surface_container_high;
+          border-left: 2px solid $primary;
+        }
+
+        &.error {
+          color: $error;
+          border: 1px solid $error_container;
+        }
+
+        &.connecting {
+          color: $tertiary;
+          border-color: $tertiary_container;
+        }
+
+        .frequency-label,
+        .battery-label {
+          color: $outline;
+          font-size: 13px;
         }
       }
       .wifi-list-item.no-hover {
@@ -120,7 +139,7 @@ window.Bar {
       min-width: 200px;
 
       trough {
-        background: $surface_container;
+        background: $surface_container_highest;
         border-radius: 7px;
         min-height: 20px;
       }
@@ -145,13 +164,13 @@ window.Bar {
       min-height: 24px;
       border-radius: 12px;
       border: none;
-      background-color: $secondary_container;
+      background-color: $surface_container_highest;
 
       &:checked {
         background-color: $primary;
 
-        > slider {
-          background: $background;
+        slider {
+          background: $on_primary;
         }
       }
 
@@ -165,7 +184,7 @@ window.Bar {
         min-height: 20px;
         margin: 2px;
         border-radius: 50%;
-        background-color: $primary;
+        background-color: $outline;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       }
     }
@@ -188,9 +207,9 @@ window.Bar {
     button,
     label {
       &:hover {
-        background-color: $primary;
+        background-color: $primary_container;
         border-radius: 5px;
-        color: $background;
+        color: $on_primary_container;
       }
     }
 
@@ -201,13 +220,13 @@ window.Bar {
     .today {
       background-color: $primary;
       border-radius: 5px;
-      color: $background;
+      color: $on_primary;
     }
   }
 
   tooltip {
-    background-color: $background;
-    border: 1px solid $primary;
+    background-color: $surface_container_low;
+    border: 1px solid $outline_variant;
     border-radius: 12px;
     padding: 6px;
     margin-top: 15px;
@@ -218,7 +237,7 @@ window.Bar {
   // min-height: 300px;
   // min-width: 300px;
 
-  background-color: $background;
+  background-color: $surface_container_low;
   border: 1px solid $primary;
   border-radius: 12px;
   padding: 12px;
@@ -229,7 +248,7 @@ window.Bar {
   font-weight: bold;
 
   .header {
-    border-bottom: 2px solid $primary;
+    border-bottom: 2px solid $outline_variant;
     padding: 0 4px 6px;
 
     .frequency-label {
@@ -242,12 +261,17 @@ window.Bar {
     margin-top: -11px;
 
     entry {
-      color: $secondary;
-      border-bottom: 1px solid $primary;
+      background: $surface_container;
+      color: $on_surface;
+      border-bottom: 1px solid $outline;
       padding: 6px;
       min-width: 200px;
 
       margin: 11px 0 10px 0;
+
+      &:focus {
+        border-bottom: 2px solid $primary;
+      }
     }
 
     button.toggle {
@@ -276,17 +300,19 @@ window.Bar {
   }
 
   .connecting {
+    color: $tertiary;
     font-size: 14px;
   }
 
   button {
-    border: 1px solid $primary;
+    border: 1px solid $outline_variant;
     border-radius: 12px;
     padding: 6px 10px;
 
     &:hover {
-      background: $primary;
-      color: $background;
+      background: $primary_container;
+      color: $on_primary_container;
+      border-color: $primary;
     }
   }
 }

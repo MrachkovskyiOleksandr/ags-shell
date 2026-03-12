@@ -80,6 +80,7 @@ export default function Wireless() {
                       }}
                     />
                     <button
+                      visible={createBinding(wifi, "enabled")}
                       cssClasses={["refresh-btn"]}
                       cursor={Gdk.Cursor.new_from_name("pointer", null)}
                       onClicked={() => wifi.scan()}
@@ -137,6 +138,10 @@ export default function Wireless() {
                               hexpand
                             >
                               <image
+                                opacity={createBinding(ap, "requires_password").as((l) => l ? 1 : 0)}
+                                iconName="network-wireless-encrypted-symbolic"
+                              />
+                              <image
                                 halign={Gtk.Align.START}
                                 iconName={createBinding(ap, "iconName")}
                               />
@@ -161,11 +166,6 @@ export default function Wireless() {
                                   "activeAccessPoint",
                                 )((active) => active === ap)}
                               />
-
-                              <image
-                                visible={createBinding(ap, "requires_password")}
-                                iconName="network-wireless-encrypted-symbolic"
-                              ></image>
                             </box>
 
                             {/* Edit button */}
