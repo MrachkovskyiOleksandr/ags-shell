@@ -1,4 +1,6 @@
 import AstalBluetooth from "gi://AstalBluetooth"
+import Pango from "gi://Pango?version=1.0"
+
 import { createBinding, createComputed, For } from "ags"
 import { Gdk, Gtk } from "ags/gtk4"
 import { timeout } from "ags/time"
@@ -43,6 +45,7 @@ export default function Bluetooth() {
                 }}
               />
               <button
+                visible={powered}
                 cssClasses={["refresh-btn"]}
                 cursor={Gdk.Cursor.new_from_name("pointer", null)}
                 onClicked={() => {
@@ -78,7 +81,7 @@ export default function Bluetooth() {
                         timeout(100, () => device.connect_device(() => {}))
                       }
                     >
-                      <box spacing={8}>
+                      <box spacing={4} hexpand>
                         <image
                           iconName={
                             device.icon
@@ -86,7 +89,12 @@ export default function Bluetooth() {
                               : "bluetooth-symbolic"
                           }
                         />
-                        <label label={device.name} />
+                        <label
+                          maxWidthChars={22}
+                          ellipsize={Pango.EllipsizeMode.END}
+                          label={device.name}
+                          tooltipText={device.name}
+                        />
                         <label
                           cssClasses={["battery-label"]}
                           visible={battery.as((p) => p > 0)}

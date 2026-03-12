@@ -29,7 +29,7 @@ window.Bar {
 
     .network-box,
     .battery-box,
-    .primarytooth-box,
+    .bluetooth-box,
     .audio-box {
     }
 
@@ -74,7 +74,7 @@ window.Bar {
       }
 
       .wifi-list-item,
-      .primarytooth-list-item {
+      .bluetooth-list-item {
         padding: 2px 4px;
 
         transition: 0.1s all linear;
