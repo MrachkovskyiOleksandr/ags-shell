@@ -44,6 +44,24 @@ export const connectNcgui = async () => {
   }
 }
 
+export const forgetNcgui = async () => {
+  try {
+    await execAsync(`nmcli connection delete "${currentAp()?.ssid}"`)
+    closeNcgui()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const disconnectNcgui = async () => {
+  try {
+    await execAsync(`nmcli connection down "${currentAp()?.ssid}"`)
+    closeNcgui()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const closeNcgui = () => {
   setVisible(false)
   setCurrentAp(null)
@@ -82,24 +100,42 @@ export default function ncgui() {
         <box
           cssClasses={["header"]}
           orientation={Gtk.Orientation.HORIZONTAL}
-          halign={Gtk.Align.CENTER}
           spacing={15}
         >
-          <label label={currentAp.as((ap) => ap?.ssid ?? "")} />
-          <label
-            cssClasses={["frequency-label"]}
-            label={currentAp.as(
-              (ap) => `(${((ap?.frequency ?? 0) / 1000).toFixed(1)} GHz)`,
-            )}
-          />
+          <button
+            onClicked={closeNcgui}
+            cursor={Gdk.Cursor.new_from_name("pointer", null)}
+          >
+            <label label="Cancel" />
+          </button>
+          <box
+            hexpand
+            orientation={Gtk.Orientation.VERTICAL}
+            halign={Gtk.Align.CENTER}
+          >
+            <label label={currentAp.as((ap) => ap?.ssid ?? "")} />
+            <label
+              cssClasses={["frequency-label"]}
+              label={currentAp.as(
+                (ap) => `(${((ap?.frequency ?? 0) / 1000).toFixed(1)} GHz)`,
+              )}
+            />
+          </box>
+          <button
+            onClicked={connectNcgui}
+            cursor={Gdk.Cursor.new_from_name("pointer", null)}
+          >
+            <label label="Connect" />
+          </button>
         </box>
+
         <box
           cssClasses={["password-box"]}
           spacing={6}
           orientation={Gtk.Orientation.HORIZONTAL}
           halign={Gtk.Align.START}
         >
-          <label label={"Password"}></label>
+          <label label={"Password"} />
           <entry
             hexpand
             text={password}
@@ -118,26 +154,31 @@ export default function ncgui() {
             />
           </togglebutton>
         </box>
+
         <box spacing={6} orientation={Gtk.Orientation.HORIZONTAL}>
-          <label
-            label={"Connecting..."}
-            visible={isConnecting}
-            cssClasses={["connecting"]}
-          ></label>
           <button
-            onClicked={closeNcgui}
-            halign={Gtk.Align.END}
+            cssClasses={["forget"]}
+            halign={Gtk.Align.START}
             hexpand
+            onClicked={forgetNcgui}
             cursor={Gdk.Cursor.new_from_name("pointer", null)}
           >
-            <label label="Cancel" />
+            <label label={"Forget network"} />
           </button>
+          <label
+            cssClasses={["connecting"]}
+            halign={Gtk.Align.CENTER}
+            hexpand
+            visible={isConnecting}          
+            label={""}
+          />
           <button
+            cssClasses={["disconnect"]}
             halign={Gtk.Align.END}
-            onClicked={connectNcgui}
+            onClicked={disconnectNcgui}
             cursor={Gdk.Cursor.new_from_name("pointer", null)}
           >
-            <label label="Connect" />
+            <label label={"Disconnect"} />
           </button>
         </box>
       </box>
