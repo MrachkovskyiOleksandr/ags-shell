@@ -257,6 +257,18 @@ window.Bar {
     }
   }
 
+  button {
+    border: 1px solid $outline_variant;
+    border-radius: 12px;
+    padding: 6px 10px;
+
+    &:hover {
+      background: $primary_container;
+      color: $on_primary_container;
+      border-color: $primary;
+    }
+  }
+
   .password-box {
     margin-top: -11px;
 
@@ -299,20 +311,21 @@ window.Bar {
     }
   }
 
+  .forget,
+  .disconnect {
+    border-color: $error;
+    color: $error;
+    font-size: 13px;
+
+    &:hover {
+      background: $error_container;
+      color: $on_error_container;
+      border-color: $error;
+    }
+  }
+
   .connecting {
     color: $tertiary;
     font-size: 14px;
-  }
-
-  button {
-    border: 1px solid $outline_variant;
-    border-radius: 12px;
-    padding: 6px 10px;
-
-    &:hover {
-      background: $primary_container;
-      color: $on_primary_container;
-      border-color: $primary;
-    }
   }
 }
