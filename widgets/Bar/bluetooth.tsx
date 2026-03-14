@@ -4,15 +4,15 @@ import Pango from "gi://Pango?version=1.0"
 import { createBinding, For } from "ags"
 import { Gtk } from "ags/gtk4"
 import { timeout } from "ags/time"
-import * as BT from "../../utils/bluetooth"
 import { pointer } from "../../utils/format"
+import { adapter, bluetoothIcon, powered, sortedDevices } from "../../utils/bluetooth"
 
 export default function Bluetooth() {
 
   return (
     <box cssClasses={["bluetooth-box"]}>
       <menubutton cursor={pointer}>
-        <image iconName={BT.bluetoothIcon} />
+        <image iconName={bluetoothIcon} />
 
         <popover hasArrow={false}>
           <box orientation={Gtk.Orientation.VERTICAL}>
@@ -22,30 +22,30 @@ export default function Bluetooth() {
                 cursor={pointer}
                 hexpand
                 halign={Gtk.Align.END}
-                active={BT.powered}
+                active={powered}
                 onNotifyActive={({ active }) => {
-                  if (active !== BT.powered()) {
-                    BT.adapter.set_powered(active)
+                  if (active !== powered()) {
+                    adapter.set_powered(active)
                   }
                 }}
               />
               <button
-                visible={BT.powered}
+                visible={powered}
                 cssClasses={["refresh-btn"]}
                 cursor={pointer}
                 onClicked={() => {
-                  if (BT.adapter.discovering) {
-                    BT.adapter.stop_discovery()
+                  if (adapter.discovering) {
+                    adapter.stop_discovery()
                   } else {
-                    BT.adapter.start_discovery()
-                    timeout(10000, () => BT.adapter.stop_discovery())
+                    adapter.start_discovery()
+                    timeout(10000, () => adapter.stop_discovery())
                   }
                 }}
               >
                 <box spacing={6}>
                   <image
                     iconName="refresh-icon-symbolic"
-                    cssClasses={createBinding(BT.adapter, "discovering").as((s) =>
+                    cssClasses={createBinding(adapter, "discovering").as((s) =>
                       s ? ["spinning"] : [],
                     )}
                   />
@@ -55,7 +55,7 @@ export default function Bluetooth() {
             </box>
 
             <box orientation={Gtk.Orientation.VERTICAL}>
-              <For each={BT.sortedDevices}>
+              <For each={sortedDevices}>
                 {(device: AstalBluetooth.Device) => {
                   const battery = createBinding(device, "batteryPercentage")
                   return (
