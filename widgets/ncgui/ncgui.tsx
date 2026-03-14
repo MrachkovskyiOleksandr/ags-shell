@@ -3,70 +3,24 @@ import app from "ags/gtk4/app"
 import AstalNetwork from "gi://AstalNetwork"
 
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { createBinding, createState } from "ags"
-import { execAsync } from "ags/process"
+import { createBinding } from "ags"
 
-const [visible, setVisible] = createState(false)
-const [currentAp, setCurrentAp] = createState<AstalNetwork.AccessPoint | null>(
-  null,
-)
-const [password, setPassword] = createState("")
-const [showPassword, setShow] = createState(false)
+import { pointer } from "../../utils/format"
+import {
+  closeNcgui,
+  connect,
+  currentAp,
+  disconnectNcgui,
+  forgetNcgui,
+  password,
+  setPassword,
+  setShow,
+  showPassword,
+  visible,
+} from "../../utils/network"
 
 const network = AstalNetwork.get_default()
 const wifi = network.wifi
-
-export const openNcgui = async (ap: AstalNetwork.AccessPoint) => {
-  setCurrentAp(ap)
-  try {
-    const saved = await execAsync(
-      `nmcli -s -g 802-11-wireless-security.psk connection show "${ap.ssid}"`,
-    )
-    setPassword(saved.trim())
-  } catch {
-    setPassword("")
-  }
-  setVisible(true)
-}
-
-export const connectNcgui = async () => {
-  let attempts = 0
-  while (attempts < 10) {
-    try {
-      await execAsync(
-        `nmcli d wifi connect "${currentAp()?.ssid}" password "${password()}"`,
-      )
-      closeNcgui()
-      return
-    } catch {
-      attempts++
-    }
-  }
-}
-
-export const forgetNcgui = async () => {
-  try {
-    await execAsync(`nmcli connection delete "${currentAp()?.ssid}"`)
-    closeNcgui()
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export const disconnectNcgui = async () => {
-  try {
-    await execAsync(`nmcli connection down "${currentAp()?.ssid}"`)
-    closeNcgui()
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export const closeNcgui = () => {
-  setVisible(false)
-  setCurrentAp(null)
-  setPassword("")
-}
 
 export default function ncgui() {
   const isConnecting = createBinding(wifi, "state").as(
@@ -87,7 +41,8 @@ export default function ncgui() {
       layer={Astal.Layer.TOP}
       anchor={Astal.WindowAnchor.NONE}
       exclusivity={Astal.Exclusivity.NORMAL}
-      keymode={Astal.Keymode.EXCLUSIVE}
+      // keymode={Astal.Keymode.EXCLUSIVE}
+      keymode={Astal.Keymode.ON_DEMAND}
       onRealize={(self) => {
         const key = new Gtk.EventControllerKey()
         key.connect("key-pressed", (_, keyval) => {
@@ -96,16 +51,13 @@ export default function ncgui() {
         self.add_controller(key)
       }}
     >
-      <box orientation={Gtk.Orientation.VERTICAL} spacing={8} hexpand>
+      <box orientation={Gtk.Orientation.VERTICAL} hexpand>
         <box
           cssClasses={["header"]}
           orientation={Gtk.Orientation.HORIZONTAL}
           spacing={15}
         >
-          <button
-            onClicked={closeNcgui}
-            cursor={Gdk.Cursor.new_from_name("pointer", null)}
-          >
+          <button onClicked={closeNcgui} cursor={pointer}>
             <label label="Cancel" />
           </button>
           <box
@@ -122,8 +74,8 @@ export default function ncgui() {
             />
           </box>
           <button
-            onClicked={connectNcgui}
-            cursor={Gdk.Cursor.new_from_name("pointer", null)}
+            onClicked={() => currentAp() && connect(currentAp()!, password())}
+            cursor={pointer}
           >
             <label label="Connect" />
           </button>
@@ -131,9 +83,9 @@ export default function ncgui() {
 
         <box
           cssClasses={["password-box"]}
-          spacing={6}
+          // spacing={6}
           orientation={Gtk.Orientation.HORIZONTAL}
-          halign={Gtk.Align.START}
+          hexpand
         >
           <label label={"Password"} />
           <entry
@@ -141,7 +93,7 @@ export default function ncgui() {
             text={password}
             visibility={showPassword}
             onNotifyText={({ text }) => setPassword(text)}
-            onActivate={() => connectNcgui()}
+            onActivate={() => currentAp() && connect(currentAp()!, password())}
           />
           <togglebutton
             active={showPassword}
@@ -149,36 +101,45 @@ export default function ncgui() {
             valign={Gtk.Align.CENTER}
           >
             <image
-              iconName={"eye-icon-symbolic"}
-              cursor={Gdk.Cursor.new_from_name("pointer", null)}
+              iconName={showPassword.as((p) =>
+                p ? "view-reveal-symbolic" : "view-conceal-symbolic",
+              )}
+              cursor={pointer}
             />
           </togglebutton>
         </box>
 
-        <box spacing={6} orientation={Gtk.Orientation.HORIZONTAL}>
+        <box cssClasses={["bottom-buttons-box"]} spacing={6} orientation={Gtk.Orientation.HORIZONTAL}>
           <button
             cssClasses={["forget"]}
             halign={Gtk.Align.START}
             hexpand
+            visible={password.as((p) => p.length > 0)}
             onClicked={forgetNcgui}
-            cursor={Gdk.Cursor.new_from_name("pointer", null)}
+            cursor={pointer}
           >
             <label label={"Forget network"} />
           </button>
-          <label
-            cssClasses={["connecting"]}
+          <box
+            visible={isConnecting}
             halign={Gtk.Align.CENTER}
             hexpand
-            visible={isConnecting}          
-            label={""}
-          />
+            spacing={4}
+          >
+            <label cssClasses={["dot", "dot-1"]} label="•" />
+            <label cssClasses={["dot", "dot-2"]} label="•" />
+            <label cssClasses={["dot", "dot-3"]} label="•" />
+          </box>
           <button
             cssClasses={["disconnect"]}
             halign={Gtk.Align.END}
+            visible={currentAp.as(
+              (ap) => wifi.activeAccessPoint?.bssid === ap?.bssid,
+            )}
             onClicked={disconnectNcgui}
-            cursor={Gdk.Cursor.new_from_name("pointer", null)}
+            cursor={pointer}
           >
-            <label label={"Disconnect"} />
+            <label label="Disconnect" />
           </button>
         </box>
       </box>

@@ -75,25 +75,19 @@ window.Bar {
 
       .wifi-list-item,
       .bluetooth-list-item {
-        padding: 2px 4px;
-
+        padding: 4px 6px;
         transition: 0.1s all linear;
 
-        * {
-          // border: 1px solid red;
+        .edit-btn,
+        .active-icon {
+          -gtk-icon-size: 18px;
         }
 
-        .inner-btn {
+        .edit-btn {
           color: transparent;
           transition: 0.1s all linear;
-          margin-left: 10px;
-
-          -gtk-icon-size: 18px;
-
-          &.hovered {
-            color: $secondary;
-            transition: 0.1s all linear;
-          }
+          // margin-left: 10px;
+          padding-left: 10px;
         }
 
         &:hover {
@@ -103,11 +97,16 @@ window.Bar {
 
           transition: 0.1s all linear;
 
-          .inner-btn {
+          .edit-btn {
             color: $on_primary_container;
             transition: 0.1s all linear;
+
+            &:hover {
+              color: $primary;
+            }
           }
         }
+
         &.active {
           background: $surface_container_high;
           border-left: 2px solid $primary;
@@ -234,13 +233,14 @@ window.Bar {
 }
 
 .main-window {
-  // min-height: 300px;
-  // min-width: 300px;
-
   background-color: $surface_container_low;
-  border: 1px solid $primary;
+  border: 1px solid $outline;
   border-radius: 12px;
   padding: 12px;
+
+  &:hover {
+    border-color: $primary;
+  }
 
   color: $secondary;
   font-family: "Adwaita Sans Nerd Font";
@@ -268,9 +268,12 @@ window.Bar {
       border-color: $primary;
     }
   }
+  * {
+    // border: 1px solid red;
+  }
 
   .password-box {
-    margin-top: -11px;
+    padding: 0 4px;
 
     entry {
       background: $surface_container;
@@ -279,7 +282,7 @@ window.Bar {
       padding: 6px;
       min-width: 200px;
 
-      margin: 11px 0 10px 0;
+      margin: 7px 4px 6px 6px;
 
       &:focus {
         border-bottom: 2px solid $primary;
@@ -289,7 +292,7 @@ window.Bar {
     button.toggle {
       min-height: 0;
       min-width: 0;
-      padding: 4px 12px 0px 2px;
+      padding: 0;
       margin: 0;
       border: none;
       background: transparent;
@@ -298,7 +301,7 @@ window.Bar {
 
       image {
         opacity: 0.2;
-        -gtk-icon-size: 20px;
+        -gtk-icon-size: 23px;
       }
 
       &:checked {
@@ -309,6 +312,10 @@ window.Bar {
         }
       }
     }
+  }
+
+  .bottom-buttons-box {
+    margin-top: 8px;
   }
 
   .forget,
@@ -324,8 +331,28 @@ window.Bar {
     }
   }
 
-  .connecting {
+  @keyframes bounce {
+    0%,
+    100% {
+      margin-top: 0;
+    }
+    50% {
+      margin-top: -6px;
+    }
+  }
+
+  .dot {
+    animation: bounce 0.8s ease-in-out infinite;
     color: $tertiary;
-    font-size: 14px;
+  }
+
+  .dot-1 {
+    animation-delay: 0s;
+  }
+  .dot-2 {
+    animation-delay: 0.2s;
+  }
+  .dot-3 {
+    animation-delay: 0.4s;
   }
 }

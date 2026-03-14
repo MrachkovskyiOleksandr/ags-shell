@@ -4,17 +4,7 @@ import { createBinding, createState } from "ags"
 import { createPoll } from "ags/time"
 import { Gdk } from "ags/gtk4"
 
-const getBatteryIcon = (percent: number, charging: boolean) => {
-  if (percent >= 100)
-    return charging
-      ? "battery-level-100-charged-symbolic"
-      : "battery-level-100-symbolic"
-
-  const level = Math.round(percent / 10) * 10
-  return charging
-    ? `battery-level-${level}-charging-symbolic`
-    : `battery-level-${level}-symbolic`
-}
+import { getBatteryIcon } from "../../utils/battery"
 
 export default function Battery() {
   const battery = AstalBattery.get_default()

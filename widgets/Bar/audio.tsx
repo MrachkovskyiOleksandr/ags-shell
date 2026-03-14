@@ -1,6 +1,7 @@
 import AstalWp from "gi://AstalWp?version=0.1"
-import { createBinding, For, Accessor } from "ags"
-import { Gdk, Gtk } from "ags/gtk4"
+import { createBinding, Accessor } from "ags"
+import { Gtk } from "ags/gtk4"
+import { pointer } from "../../utils/format"
 
 const wp = AstalWp.get_default()?.audio
 const device = wp.default_speaker
@@ -12,7 +13,7 @@ export default function Audio() {
 
   return (
     <box cssClasses={["audio-box"]} visible={true} tooltipText={volume}>
-      <menubutton cursor={Gdk.Cursor.new_from_name("pointer", null)}>
+      <menubutton cursor={pointer}>
         <image iconName={createBinding(device, "volumeIcon")} />
         <popover hasArrow={false}>
           <box orientation={Gtk.Orientation.VERTICAL}>

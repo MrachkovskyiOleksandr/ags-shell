@@ -1,66 +1,51 @@
 import AstalBluetooth from "gi://AstalBluetooth"
 import Pango from "gi://Pango?version=1.0"
 
-import { createBinding, createComputed, For } from "ags"
-import { Gdk, Gtk } from "ags/gtk4"
+import { createBinding, For } from "ags"
+import { Gtk } from "ags/gtk4"
 import { timeout } from "ags/time"
-
-const bluetooth = AstalBluetooth.get_default()
+import * as BT from "../../utils/bluetooth"
+import { pointer } from "../../utils/format"
 
 export default function Bluetooth() {
-  const adapter = bluetooth.adapter
-  const powered = createBinding(adapter, "powered")
-  const devices = createBinding(bluetooth, "devices")
-
-  const bluetoothIcon = createComputed(() => {
-    if (!powered()) return "bluetooth-disabled-symbolic"
-    const connected = devices().some((d) => createBinding(d, "connected")())
-    return connected ? "bluetooth-connected-symbolic" : "bluetooth-symbolic"
-  })
-
-  const sortedDevices = createComputed(() =>
-    devices()
-      .filter((d) => d.name !== null)
-      .sort((a, b) => Number(b.connected) - Number(a.connected)),
-  )
 
   return (
     <box cssClasses={["bluetooth-box"]}>
-      <menubutton cursor={Gdk.Cursor.new_from_name("pointer", null)}>
-        <image iconName={bluetoothIcon} />
+      <menubutton cursor={pointer}>
+        <image iconName={BT.bluetoothIcon} />
 
         <popover hasArrow={false}>
           <box orientation={Gtk.Orientation.VERTICAL}>
             <box cssClasses={["header"]} valign={Gtk.Align.CENTER}>
               <label label="Bluetooth" hexpand halign={Gtk.Align.START} />
               <switch
-                cursor={Gdk.Cursor.new_from_name("pointer", null)}
+                cursor={pointer}
                 hexpand
                 halign={Gtk.Align.END}
-                active={powered()}
+                active={BT.powered}
                 onNotifyActive={({ active }) => {
-                  if (active !== powered()) {
-                    adapter.set_powered(active)
+                  if (active !== BT.powered()) {
+                    BT.adapter.set_powered(active)
                   }
                 }}
               />
               <button
-                visible={powered}
+                visible={BT.powered}
                 cssClasses={["refresh-btn"]}
-                cursor={Gdk.Cursor.new_from_name("pointer", null)}
+                cursor={pointer}
                 onClicked={() => {
-                  if (adapter.discovering) {
-                    adapter.stop_discovery()
+                  if (BT.adapter.discovering) {
+                    BT.adapter.stop_discovery()
                   } else {
-                    adapter.start_discovery()
-                    timeout(10000, () => adapter.stop_discovery())
+                    BT.adapter.start_discovery()
+                    timeout(10000, () => BT.adapter.stop_discovery())
                   }
                 }}
               >
                 <box spacing={6}>
                   <image
                     iconName="refresh-icon-symbolic"
-                    cssClasses={createBinding(adapter, "discovering").as((s) =>
+                    cssClasses={createBinding(BT.adapter, "discovering").as((s) =>
                       s ? ["spinning"] : [],
                     )}
                   />
@@ -70,13 +55,13 @@ export default function Bluetooth() {
             </box>
 
             <box orientation={Gtk.Orientation.VERTICAL}>
-              <For each={sortedDevices}>
+              <For each={BT.sortedDevices}>
                 {(device: AstalBluetooth.Device) => {
                   const battery = createBinding(device, "batteryPercentage")
                   return (
                     <button
                       cssClasses={["bluetooth-list-item"]}
-                      cursor={Gdk.Cursor.new_from_name("pointer", null)}
+                      cursor={pointer}
                       onClicked={() =>
                         timeout(100, () => device.connect_device(() => {}))
                       }
