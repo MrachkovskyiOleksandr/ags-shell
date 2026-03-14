@@ -41,7 +41,6 @@ export default function ncgui() {
       layer={Astal.Layer.TOP}
       anchor={Astal.WindowAnchor.NONE}
       exclusivity={Astal.Exclusivity.NORMAL}
-      // keymode={Astal.Keymode.EXCLUSIVE}
       keymode={Astal.Keymode.ON_DEMAND}
       onRealize={(self) => {
         const key = new Gtk.EventControllerKey()
@@ -83,7 +82,6 @@ export default function ncgui() {
 
         <box
           cssClasses={["password-box"]}
-          // spacing={6}
           orientation={Gtk.Orientation.HORIZONTAL}
           hexpand
         >
