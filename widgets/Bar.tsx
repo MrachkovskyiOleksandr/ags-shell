@@ -6,6 +6,7 @@ import Clock from "./Bar/clock"
 import Wireless from "./Bar/network"
 import Bluetooth from "./Bar/bluetooth"
 import Audio from "./Bar/audio"
+import Workspaces from "./Bar/workspaces"
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
@@ -22,6 +23,8 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
     >
       <box spacing={8} cssClasses={["center-box"]} halign={Gtk.Align.CENTER}>
         <Clock />
+        <box hexpand />
+        <Workspaces />
         <box hexpand />
         <Audio />
         <Bluetooth />

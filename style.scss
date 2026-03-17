@@ -73,6 +73,11 @@ window.Bar {
         border: none;
       }
 
+      .wifi-list-item.no-hover {
+        background: transparent;
+        color: $secondary;
+      }
+
       .wifi-list-item,
       .bluetooth-list-item {
         padding: 4px 6px;
@@ -128,9 +133,25 @@ window.Bar {
           font-size: 13px;
         }
       }
-      .wifi-list-item.no-hover {
-        background: transparent;
-        color: $secondary;
+    }
+
+    .power-profile-popover {
+      .profile-btn {
+        padding: 4px 6px;
+        transition: 0.1s all linear;
+
+        &:hover {
+          background: $primary_container;
+          border-radius: 7px;
+          color: $on_primary_container;
+
+          transition: 0.1s all linear;
+        }
+      }
+
+      .active {
+        background: $surface_container_high;
+        border-left: 2px solid $primary;
       }
     }
 
@@ -199,6 +220,27 @@ window.Bar {
       to {
         transform: rotate(360deg);
       }
+    }
+  }
+
+  .workspace {
+    min-width: 24px;
+    min-height: 24px;
+    border-radius: 50%;
+
+    color: transparent;
+    background: $surface_container;
+
+    transition: 0.3s all linear;
+
+    &.active {
+      background: $primary;
+      transition: 0.3s all linear;
+    }
+
+    &:hover {
+      background: $primary_container;
+      transition: 0.3s all linear;
     }
   }
 
