@@ -34,7 +34,7 @@ export default function Wireless() {
                       hexpand
                       halign={Gtk.Align.END}
                       cursor={pointer}
-                      active={network.wifi.enabled}
+                      active={createBinding(network.wifi, "enabled")}
                       onNotifyActive={({ active }) => {
                         if (active != network.wifi.enabled)
                           network.wifi.set_enabled(active)
@@ -61,7 +61,17 @@ export default function Wireless() {
                   <For each={createBinding(wifi, "accessPoints")(sortedAP)}>
                     {(ap: AstalNetwork.AccessPoint) => {
                       return (
-                        <box cssClasses={["wifi-list-item"]} hexpand>
+                        <box
+                          cssClasses={createBinding(
+                            wifi,
+                            "activeAccessPoint",
+                          ).as((active) =>
+                            active === ap
+                              ? ["wifi-list-item", "active"]
+                              : ["wifi-list-item"],
+                          )}
+                          hexpand
+                        >
                           <button
                             hexpand
                             cssClasses={["wifi-connect-btn"]}
