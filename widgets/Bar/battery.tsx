@@ -1,13 +1,22 @@
 import AstalBattery from "gi://AstalBattery"
+import AstalPowerProfiles from "gi://AstalPowerProfiles"
 
 import { createBinding, createState } from "ags"
 import { createPoll } from "ags/time"
-import { Gdk } from "ags/gtk4"
+import { Gtk } from "ags/gtk4"
 
 import { getBatteryIcon } from "../../utils/battery"
+import { pointer } from "../../utils/format"
 
 export default function Battery() {
   const battery = AstalBattery.get_default()
+  const powerProfiles = AstalPowerProfiles.get_default()
+
+  const profileNames: Record<string, string> = {
+    "power-saver": "Power saver",
+    balanced: "Balanced",
+    performance: "Performance",
+  }
 
   const percent = createBinding(
     battery,
@@ -31,7 +40,6 @@ export default function Battery() {
 
   const tooltipText = createPoll("", 3000, () => {
     const isCharging = battery.charging
-
     if (!isCharging) {
       const h = Math.floor(battery.timeToEmpty / 3600)
       const m = Math.floor((battery.timeToEmpty % 3600) / 60)
@@ -45,12 +53,52 @@ export default function Battery() {
 
   return (
     <box
-      cursor={Gdk.Cursor.new_from_name("pointer", null)}
+      cursor={pointer}
       cssClasses={["battery-box"]}
       tooltipText={tooltipText}
     >
-      <image iconName={icon} />
-      <label label={percent} />
+      <menubutton cursor={pointer}>
+        <box>
+          <image iconName={icon} />
+          <label label={percent} />
+        </box>
+        <popover hasArrow={false} cssClasses={["power-profile-popover"]}>
+          <box orientation={Gtk.Orientation.VERTICAL} spacing={6}>
+            <label cssClasses={["header"]} label="Power profile" />
+            <box spacing={4} orientation={Gtk.Orientation.VERTICAL}>
+              {powerProfiles
+                .get_profiles()
+                .map((profile: AstalPowerProfiles.Profile) => (
+                  <button
+                    cursor={pointer}
+                    cssClasses={createBinding(
+                      powerProfiles,
+                      "activeProfile",
+                    ).as((active) =>
+                      active === profile.profile
+                        ? ["profile-btn", "active"]
+                        : ["profile-btn"],
+                    )}
+                    onClicked={() =>
+                      powerProfiles.set_active_profile(profile.profile)
+                    }
+                  >
+                    <box spacing={6}>
+                      <image
+                        iconName={
+                          "power-profile-" + profile.profile + "-symbolic"
+                        }
+                      />
+                      <label
+                        label={profileNames[profile.profile] ?? profile.profile}
+                      />
+                    </box>
+                  </button>
+                ))}
+            </box>
+          </box>
+        </popover>
+      </menubutton>
     </box>
   )
 }

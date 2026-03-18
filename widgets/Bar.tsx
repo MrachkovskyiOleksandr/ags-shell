@@ -21,15 +21,17 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       anchor={TOP | LEFT | RIGHT}
       application={app}
     >
-      <box spacing={8} cssClasses={["center-box"]} halign={Gtk.Align.CENTER}>
-        <Clock />
-        <box hexpand />
-        <Workspaces />
-        <box hexpand />
-        <Audio />
-        <Bluetooth />
-        <Wireless />
-        <Battery />
+      <box halign={Gtk.Align.CENTER}>
+        <box spacing={0} cssClasses={["center-box"]}>
+          <Clock />
+          <box hexpand />
+          <Workspaces />
+          <box hexpand />
+          <Audio />
+          <Bluetooth />
+          <Wireless />
+          <Battery />
+        </box>
       </box>
     </window>
   )

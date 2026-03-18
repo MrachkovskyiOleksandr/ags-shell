@@ -27,10 +27,22 @@ window.Bar {
 
     padding: 4px 10px;
 
-    .network-box,
-    .battery-box,
+    .clock-box,
+    .audio-box,
     .bluetooth-box,
-    .audio-box {
+    .network-box,
+    .battery-box {
+      padding: 0 4px 1px;
+
+      // border: 1px solid red;
+      // &:hover {
+      //   background: $on_secondary;
+      //   border-radius: 6px;
+      // }
+      &:hover {
+        border-bottom: 1px solid $primary;
+        padding-bottom: 0;
+      }
     }
 
     popover {
@@ -136,6 +148,8 @@ window.Bar {
     }
 
     .power-profile-popover {
+      min-width: 150px;
+
       .profile-btn {
         padding: 4px 6px;
         transition: 0.1s all linear;
@@ -225,7 +239,6 @@ window.Bar {
 
   .workspace {
     min-width: 24px;
-    min-height: 24px;
     border-radius: 50%;
 
     color: transparent;
@@ -236,6 +249,10 @@ window.Bar {
     &.active {
       background: $primary;
       transition: 0.3s all linear;
+    }
+
+    &.urgent {
+      animation: blinking 3s ease-in-out infinite;
     }
 
     &:hover {
@@ -380,6 +397,24 @@ window.Bar {
     }
     50% {
       margin-top: -6px;
+    }
+  }
+
+  @keyframes blinking {
+    0%,
+    100% {
+      background: radial-gradient(
+        circle,
+        $surface_container 9px,
+        $surface_container 10px
+      );
+    }
+    50% {
+      background: radial-gradient(
+        circle,
+        $surface_container 9px,
+        $error 10px
+      );
     }
   }
 
