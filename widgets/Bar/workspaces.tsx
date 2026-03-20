@@ -7,7 +7,7 @@ export default function Workspaces() {
   const hypr = AstalHyprland.get_default()
 
   return (
-    <box spacing={4}>
+    <box spacing={4} cssClasses={["workspaces-box"]} heightRequest={5} >
       <For each={sortedWorkspaces}>
         {(ws: AstalHyprland.Workspace) => (
           <button

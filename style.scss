@@ -237,27 +237,54 @@ window.Bar {
     }
   }
 
-  .workspace {
-    min-width: 24px;
-    border-radius: 50%;
+  .workspaces-box {
+    // border: 1px solid red;
 
-    color: transparent;
-    background: $surface_container;
+    .workspace {
+      min-width: 24px;
+      border-radius: 50%;
 
-    transition: 0.3s all linear;
+      background: radial-gradient(
+        circle,
+        $surface_container 40%,
+        transparent 40%
+      );
+      color: transparent;
 
-    &.active {
-      background: $primary;
       transition: 0.3s all linear;
-    }
 
-    &.urgent {
-      animation: blinking 3s ease-in-out infinite;
-    }
+      &.active {
+        background: radial-gradient(circle, $primary 100%, transparent 100%);
+      }
 
-    &:hover {
-      background: $primary_container;
-      transition: 0.3s all linear;
+      &.urgent {
+        animation: blinking 3s ease-in-out infinite;
+      }
+
+      &:hover {
+        background: $primary_container;
+        transition: 0.3s all linear;
+      }
+    }
+  }
+
+  @keyframes blinking {
+    0%,
+    100% {
+      background: radial-gradient(
+        circle,
+        $surface_container 40%,
+        $surface_container 40%,
+        transparent 40%
+      );
+    }
+    50% {
+      background: radial-gradient(
+        circle,
+        $surface_container 40%,
+        $error 50%,
+        transparent 60%
+      );
     }
   }
 
@@ -397,24 +424,6 @@ window.Bar {
     }
     50% {
       margin-top: -6px;
-    }
-  }
-
-  @keyframes blinking {
-    0%,
-    100% {
-      background: radial-gradient(
-        circle,
-        $surface_container 9px,
-        $surface_container 10px
-      );
-    }
-    50% {
-      background: radial-gradient(
-        circle,
-        $surface_container 9px,
-        $error 10px
-      );
     }
   }
 
