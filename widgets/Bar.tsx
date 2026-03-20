@@ -22,7 +22,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       application={app}
     >
       <box halign={Gtk.Align.CENTER}>
-        <box spacing={0} cssClasses={["center-box"]}>
+        <box cssClasses={["center-box"]}>
           <Clock />
           <box hexpand />
           <Workspaces />
