@@ -262,7 +262,11 @@ window.Bar {
       }
 
       &:hover {
-        background: $primary_container;
+        background: radial-gradient(
+          circle,
+          $primary_container 100%,
+          transparent 100%
+        );
         transition: 0.3s all linear;
       }
     }
