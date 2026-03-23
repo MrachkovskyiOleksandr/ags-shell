@@ -1,10 +1,7 @@
-import AstalWp from "gi://AstalWp?version=0.1"
 import { createBinding, Accessor } from "ags"
 import { Gtk } from "ags/gtk4"
 import { pointer } from "../../utils/format"
-
-const wp = AstalWp.get_default()?.audio
-const device = wp.default_speaker
+import { audioIcon, device } from "../../utils/audio"
 
 export default function Audio() {
   const volume = createBinding(device, "volume").as((b) => {
@@ -14,20 +11,31 @@ export default function Audio() {
   return (
     <box cssClasses={["audio-box"]} visible={true} tooltipText={volume}>
       <menubutton cursor={pointer}>
-        <image iconName={createBinding(device, "volumeIcon")} />
+        <image iconName={audioIcon} />
         <popover hasArrow={false}>
           <box orientation={Gtk.Orientation.VERTICAL}>
-            <box cssClasses={["header" , "volume"]} halign={Gtk.Align.CENTER}  >
-              <label label={volume}></label>
-              {/* ToDo Mute button */}
+            <label cssClasses={["header"]} label={volume}></label>
+            <box orientation={Gtk.Orientation.HORIZONTAL} spacing={4}>
+              <slider
+                orientation={Gtk.Orientation.HORIZONTAL}
+                hexpand
+                value={createBinding(device, "volume")}
+                min={0}
+                max={1}
+                onChangeValue={({ value }) => device.set_volume(value)}
+              />
+              <button
+                cssClasses={createBinding(device, "mute").as((m) =>
+                  m ? ["mute-button", "muted"] : ["mute-button"],
+                )}
+                cursor={pointer}
+                onClicked={() => {
+                  device.set_mute(!device.mute)
+                }}
+              >
+                <image iconName={audioIcon}></image>
+              </button>
             </box>
-            <slider
-              orientation={Gtk.Orientation.HORIZONTAL}
-              value={createBinding(device, "volume")}
-              min={0}
-              max={1}
-              onChangeValue={({ value }) => device.set_volume(value)}
-            />
           </box>
         </popover>
       </menubutton>
