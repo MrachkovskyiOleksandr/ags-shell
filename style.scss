@@ -25,23 +25,39 @@ window.Bar {
 
     min-width: 500px;
 
-    padding: 4px 10px;
+    padding: 4px 10px 6px;
 
     .clock-box,
     .audio-box,
     .bluetooth-box,
     .network-box,
     .battery-box {
-      padding: 0 4px 1px;
+      padding: 0 4px;
+      border-bottom: 1px solid transparent;
 
-      // border: 1px solid red;
-      // &:hover {
-      //   background: $on_secondary;
-      //   border-radius: 6px;
-      // }
+      transition: 0.3s all ease-in-out;
+
       &:hover {
         border-bottom: 1px solid $primary;
-        padding-bottom: 0;
+      }
+    }
+
+    .audio-box {
+      .mute-button {
+        padding: 3px;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        -gtk-icon-size: 23px;
+        transition: 0.3s all linear;
+
+        &:hover {
+          background: $primary_container;
+          color: $on_primary_container;
+        }
+
+        &.muted {
+          color: $error;
+        }
       }
     }
 
@@ -79,10 +95,6 @@ window.Bar {
             }
           }
         }
-      }
-
-      .volume {
-        border: none;
       }
 
       .wifi-list-item.no-hover {
