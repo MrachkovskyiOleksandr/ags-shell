@@ -6,7 +6,6 @@ $bg-color: #{"@theme_bg_color"};
 
 * {
   all: unset;
-  // border: 1px solid red;
 }
 
 window.Bar {
@@ -33,13 +32,6 @@ window.Bar {
     .network-box,
     .battery-box {
       padding: 0 4px;
-      border-bottom: 1px solid transparent;
-
-      transition: 0.3s all ease-in-out;
-
-      &:hover {
-        border-bottom: 1px solid $primary;
-      }
     }
 
     .audio-box {
@@ -115,7 +107,6 @@ window.Bar {
         .edit-btn {
           color: transparent;
           transition: 0.1s all linear;
-          // margin-left: 10px;
           padding-left: 10px;
         }
 
@@ -250,8 +241,6 @@ window.Bar {
   }
 
   .workspaces-box {
-    // border: 1px solid red;
-
     .workspace {
       min-width: 24px;
       border-radius: 50%;
@@ -369,9 +358,6 @@ window.Bar {
       color: $on_primary_container;
       border-color: $primary;
     }
-  }
-  * {
-    // border: 1px solid red;
   }
 
   .password-box {

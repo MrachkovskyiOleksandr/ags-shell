@@ -10,8 +10,9 @@ export const [password, setPassword] = createState("")
 export const [showPassword, setShow] = createState(false)
 
 export async function connect(ap: AstalNetwork.AccessPoint, pwd?: string) {
+  // For old wifi routers, that can't connect from the first try 
   let attempts = 0
-  while (attempts < 10) {
+  while (attempts < 20) {
     try {
       const cmd = pwd
         ? `nmcli d wifi connect "${ap.ssid}" bssid "${ap.bssid}" password "${pwd}"`
@@ -21,7 +22,7 @@ export async function connect(ap: AstalNetwork.AccessPoint, pwd?: string) {
       return
     } catch {
       attempts++
-      await new Promise((r) => setTimeout(r, 500))
+      await new Promise((r) => setTimeout(r, 250))
     }
   }
 }

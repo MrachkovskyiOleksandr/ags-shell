@@ -9,7 +9,7 @@ export default function Audio() {
   })
 
   return (
-    <box cssClasses={["audio-box"]} visible={true} tooltipText={volume}>
+    <box cssClasses={["audio-box"]} tooltipText={volume}>
       <menubutton cursor={pointer}>
         <image iconName={audioIcon} />
         <popover hasArrow={false}>
@@ -17,8 +17,8 @@ export default function Audio() {
             <label cssClasses={["header"]} label={volume}></label>
             <box orientation={Gtk.Orientation.HORIZONTAL} spacing={4}>
               <slider
-                orientation={Gtk.Orientation.HORIZONTAL}
                 hexpand
+                cursor={pointer}
                 value={createBinding(device, "volume")}
                 min={0}
                 max={1}
