@@ -34,21 +34,35 @@ window.Bar {
       padding: 0 4px;
     }
 
-    .audio-box {
-      .mute-button {
-        padding: 3px;
-        border: 1px solid transparent;
-        border-radius: 7px;
-        -gtk-icon-size: 23px;
+    .workspaces-box {
+      .workspace {
+        min-width: 24px;
+        border-radius: 50%;
+
+        background: radial-gradient(
+          circle,
+          $surface_container 40%,
+          transparent 40%
+        );
+        color: transparent;
+
         transition: 0.3s all linear;
 
-        &:hover {
-          background: $primary_container;
-          color: $on_primary_container;
+        &.active {
+          background: radial-gradient(circle, $primary 100%, transparent 100%);
         }
 
-        &.muted {
-          color: $error;
+        &.urgent {
+          animation: blinking 3s ease-in-out infinite;
+        }
+
+        &:hover {
+          background: radial-gradient(
+            circle,
+            $primary_container 100%,
+            transparent 100%
+          );
+          transition: 0.3s all linear;
         }
       }
     }
@@ -86,6 +100,47 @@ window.Bar {
               transition: 0.1s all linear;
             }
           }
+        }
+      }
+
+      scale {
+        min-width: 200px;
+
+        trough {
+          background: $surface_container_highest;
+          border-radius: 7px;
+          min-height: 26px;
+        }
+
+        trough highlight {
+          background-color: $primary;
+          border-radius: 7px;
+
+          &:hover {
+            opacity: 0.7;
+            transition: 0.1s all linear;
+          }
+        }
+
+        trough slider {
+          display: none;
+        }
+      }
+
+      .mute-button {
+        padding: 3px;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        -gtk-icon-size: 23px;
+        transition: 0.3s all linear;
+
+        &:hover {
+          background: $primary_container;
+          color: $on_primary_container;
+        }
+
+        &.muted {
+          color: $error;
         }
       }
 
@@ -153,6 +208,10 @@ window.Bar {
     .power-profile-popover {
       min-width: 150px;
 
+      .header {
+        margin-bottom: 0;
+      }
+
       .profile-btn {
         padding: 4px 6px;
         transition: 0.1s all linear;
@@ -169,30 +228,6 @@ window.Bar {
       .active {
         background: $surface_container_high;
         border-left: 2px solid $primary;
-      }
-    }
-
-    scale {
-      min-width: 200px;
-
-      trough {
-        background: $surface_container_highest;
-        border-radius: 7px;
-        min-height: 20px;
-      }
-
-      trough highlight {
-        background-color: $primary;
-        border-radius: 7px;
-
-        &:hover {
-          opacity: 0.7;
-          transition: 0.1s all linear;
-        }
-      }
-
-      trough slider {
-        display: none;
       }
     }
 
@@ -229,47 +264,14 @@ window.Bar {
     .spinning {
       animation: spin 1s linear infinite;
     }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
   }
 
-  .workspaces-box {
-    .workspace {
-      min-width: 24px;
-      border-radius: 50%;
-
-      background: radial-gradient(
-        circle,
-        $surface_container 40%,
-        transparent 40%
-      );
-      color: transparent;
-
-      transition: 0.3s all linear;
-
-      &.active {
-        background: radial-gradient(circle, $primary 100%, transparent 100%);
-      }
-
-      &.urgent {
-        animation: blinking 3s ease-in-out infinite;
-      }
-
-      &:hover {
-        background: radial-gradient(
-          circle,
-          $primary_container 100%,
-          transparent 100%
-        );
-        transition: 0.3s all linear;
-      }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 
