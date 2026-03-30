@@ -36,7 +36,7 @@ export default function ncgui() {
   return (
     <window
       visible={visible}
-      cssClasses={["main-window"]}
+      cssClasses={["ncgui-window"]}
       application={app}
       layer={Astal.Layer.TOP}
       anchor={Astal.WindowAnchor.NONE}

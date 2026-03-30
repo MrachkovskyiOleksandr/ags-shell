@@ -3,8 +3,10 @@ import GLib from "gi://GLib"
 
 import app from "ags/gtk4/app"
 import style from "./style.scss"
-import Bar from "./widgets/Bar"
+import StatusBar from "./widgets/Status-bar"
 import ncgui from "./widgets/ncgui/ncgui"
+import MetricsBar from "./widgets/Metrics-bar"
+
 
 Gtk.IconTheme.get_for_display(Gdk.Display.get_default()!).add_search_path(
   `${GLib.get_home_dir()}/.config/ags/icons`
@@ -13,7 +15,8 @@ Gtk.IconTheme.get_for_display(Gdk.Display.get_default()!).add_search_path(
 app.start({
   css: style,
   main() {
-    app.get_monitors().map(Bar)
+    app.get_monitors().map(StatusBar)
+    app.get_monitors().map(MetricsBar)
     ncgui()
   },
 })
