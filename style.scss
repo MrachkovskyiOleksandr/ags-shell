@@ -3,18 +3,24 @@ $fg-color: #{"@theme_fg_color"};
 $bg-color: #{"@theme_bg_color"};
 
 @import "./colors.scss";
+@import "./widgets/Metrics-Bar/metrics-bar.scss";
 
 * {
   all: unset;
-}
-
-window.Bar {
-  background: transparent;
-  color: $secondary;
 
   font-family: "Adwaita Sans Nerd Font";
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
+}
+
+window.Metrics-Bar {
+  background: transparent;
+  color: $secondary;
+}
+
+window.Status-Bar {
+  background: transparent;
+  color: $secondary;
 
   .center-box {
     background-color: black;
@@ -325,7 +331,7 @@ window.Bar {
   }
 }
 
-.main-window {
+.ncgui-window {
   background-color: $surface_container_low;
   border: 1px solid $outline;
   border-radius: 12px;

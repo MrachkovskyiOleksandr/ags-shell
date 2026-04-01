@@ -1,0 +1,41 @@
+window.Metrics-Bar {
+  * {
+    transition: 0.3s all ease-in-out;
+  }
+
+  .toggle {
+    min-width: 40px;
+    min-height: 30px;
+    background: linear-gradient(-90deg, black 0%, transparent 100%);
+    opacity: 0.1%;
+
+    &:hover {
+      opacity: 70%;
+    }
+
+    &.active {
+      background: linear-gradient(90deg, black 0%, transparent 100%);
+      opacity: 100%;
+      border-bottom: 1px solid $outline;
+      margin-left: -1px;
+
+      transition: 0.01s all ease-in-out;
+    }
+  }
+
+  .array {
+    background: black;
+    border: 1px solid $outline;
+    border-top: none;
+    border-right: none;
+    border-radius: 0 0 0 11px;
+
+    min-width: 380px;
+    padding: 4px 10px 6px;
+
+    .separator {
+      min-width: 1px;
+      background: $outline;
+    }
+  }
+}
