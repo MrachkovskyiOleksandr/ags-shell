@@ -4,11 +4,10 @@ import Pango from "gi://Pango?version=1.0"
 import { createBinding, With, For, createMemo } from "ags"
 import { Gtk } from "ags/gtk4"
 
-import { openNcgui, handleApClick } from "../../utils/network"
+import { openNcgui, handleApClick, network } from "../../utils/network"
 import { networkSpeed, pointer, sortedAP } from "../../utils/format"
 
 export default function Wireless() {
-  const network = AstalNetwork.get_default()
   const wifi = createBinding(network, "wifi")
 
   return (

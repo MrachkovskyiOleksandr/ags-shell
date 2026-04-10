@@ -1,7 +1,9 @@
 import AstalNetwork from "gi://AstalNetwork"
 
 import { execAsync } from "ags/process"
-import { createState } from "ags"
+import { createBinding, createState } from "ags"
+
+export const network = AstalNetwork.get_default()
 
 export const [visible, setVisible] = createState(false)
 export const [currentAp, setCurrentAp] =
@@ -10,9 +12,9 @@ export const [password, setPassword] = createState("")
 export const [showPassword, setShow] = createState(false)
 
 export async function connect(ap: AstalNetwork.AccessPoint, pwd?: string) {
-  // For old wifi routers, that can't connect from the first try 
+  // For old wifi routers, that can't connect from the first try
   let attempts = 0
-  while (attempts < 20) {
+  while (attempts < 20 && createBinding(network.wifi, "enabled")) {
     try {
       const cmd = pwd
         ? `nmcli d wifi connect "${ap.ssid}" bssid "${ap.bssid}" password "${pwd}"`
