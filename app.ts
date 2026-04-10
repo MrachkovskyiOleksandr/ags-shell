@@ -6,6 +6,7 @@ import style from "./style.scss"
 import StatusBar from "./widgets/Status-bar"
 import ncgui from "./widgets/ncgui/ncgui"
 import MetricsBar from "./widgets/Metrics-bar"
+import PlayerBar from "./widgets/Player-bar"
 
 
 Gtk.IconTheme.get_for_display(Gdk.Display.get_default()!).add_search_path(
@@ -17,6 +18,7 @@ app.start({
   main() {
     app.get_monitors().map(StatusBar)
     app.get_monitors().map(MetricsBar)
+    app.get_monitors().map(PlayerBar)
     ncgui()
   },
 })

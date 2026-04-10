@@ -4,6 +4,7 @@ $bg-color: #{"@theme_bg_color"};
 
 @import "./colors.scss";
 @import "./widgets/Metrics-Bar/metrics-bar.scss";
+@import "./widgets/Player-Bar/player-bar.scss";
 
 * {
   all: unset;
@@ -14,6 +15,12 @@ $bg-color: #{"@theme_bg_color"};
 }
 
 window.Metrics-Bar {
+  background: transparent;
+  color: $secondary;
+}
+
+window.Player-Bar {
+  // border: 1px solid red;
   background: transparent;
   color: $secondary;
 }
@@ -42,7 +49,7 @@ window.Status-Bar {
 
     .workspaces-box {
       .workspace {
-        min-width: 24px;
+        min-width: 23px;
         border-radius: 50%;
 
         background: radial-gradient(
