@@ -9,9 +9,12 @@ import {
   canGoNext,
   canGoPrevious,
   coverArt,
+  fewSources,
   isPlaying,
   length,
   position,
+  selectNext,
+  selectPrevious,
   title,
 } from "./Player-Bar/player"
 import { pointer } from "../utils/format"
@@ -58,84 +61,110 @@ export default function PlayerBar(gdkmonitor: Gdk.Monitor) {
             <popover hasArrow={false}>
               <box
                 cssClasses={["player-popover"]}
-                orientation={Gtk.Orientation.VERTICAL}
+                orientation={Gtk.Orientation.HORIZONTAL}
                 spacing={6}
               >
-                <box spacing={20}>
-                  <image
-                    halign={Gtk.Align.CENTER}
-                    valign={Gtk.Align.CENTER}
-                    cssClasses={["cover"]}
-                    visible={coverArt.as((c) => (c != "" ? true : false))}
-                    file={coverArt}
-                    pixel_size={60}
-                  />
-                  <box
-                    cssClasses={["info"]}
-                    vexpand
-                    hexpand
-                    orientation={Gtk.Orientation.VERTICAL}
-                    valign={Gtk.Align.CENTER}
-                  >
-                    <label
-                      cssClasses={["title"]}
-                      wrap
-                      max_width_chars={30}
-                      xalign={0}
-                      yalign={1}
-                      label={title}
-                    />
-                    <label
-                      cssClasses={["artist"]}
-                      wrap
-                      max_width_chars={30}
-                      xalign={0}
-                      label={artist}
-                    />
-                  </box>
-
+                <box>
                   <button
-                    cssClasses={["play-pause"]}
                     cursor={pointer}
-                    widthRequest={34}
-                    heightRequest={34}
+                    visible={fewSources}
+                    onClicked={selectPrevious}
                     halign={Gtk.Align.CENTER}
                     valign={Gtk.Align.CENTER}
-                    onClicked={() => activePlayer?.play_pause()}
                   >
-                    <image
-                      iconName={isPlaying.as((p) =>
-                        p
-                          ? "media-playback-pause-symbolic"
-                          : "media-playback-start-symbolic",
-                      )}
-                    />
+                    <image iconName={"pan-start-symbolic"} />
                   </button>
                 </box>
-                <box cssClasses={["controls"]} spacing={20}>
+                <box orientation={Gtk.Orientation.VERTICAL} spacing={6}>
+                  <box spacing={20}>
+                    <image
+                      halign={Gtk.Align.CENTER}
+                      valign={Gtk.Align.CENTER}
+                      cssClasses={["cover"]}
+                      visible={coverArt.as((c) => (c != "" ? true : false))}
+                      file={coverArt}
+                      pixel_size={60}
+                    />
+                    <box
+                      cssClasses={["info"]}
+                      vexpand
+                      hexpand
+                      orientation={Gtk.Orientation.VERTICAL}
+                      valign={Gtk.Align.CENTER}
+                    >
+                      <label
+                        cssClasses={["title"]}
+                        wrap
+                        max_width_chars={30}
+                        xalign={0}
+                        yalign={1}
+                        label={title}
+                      />
+                      <label
+                        cssClasses={["artist"]}
+                        wrap
+                        max_width_chars={30}
+                        xalign={0}
+                        label={artist}
+                      />
+                    </box>
+
+                    <button
+                      cssClasses={["play-pause"]}
+                      cursor={pointer}
+                      widthRequest={34}
+                      heightRequest={34}
+                      halign={Gtk.Align.CENTER}
+                      valign={Gtk.Align.CENTER}
+                      onClicked={() => activePlayer?.play_pause()}
+                    >
+                      <image
+                        iconName={isPlaying.as((p) =>
+                          p
+                            ? "media-playback-pause-symbolic"
+                            : "media-playback-start-symbolic",
+                        )}
+                      />
+                    </button>
+                  </box>
+                  <box cssClasses={["controls"]} spacing={20}>
+                    <button
+                      cursor={pointer}
+                      visible={canGoPrevious}
+                      onClicked={() => activePlayer?.previous()}
+                    >
+                      <image iconName={"media-skip-backward-symbolic"} />
+                    </button>
+                    <slider
+                      cssClasses={["timeline"]}
+                      hexpand
+                      cursor={pointer}
+                      value={position}
+                      max={length}
+                      heightRequest={20}
+                      onChangeValue={(self) =>
+                        activePlayer?.set_position(self.value)
+                      }
+                    />
+                    <button
+                      cursor={pointer}
+                      visible={canGoNext}
+                      onClicked={() => activePlayer?.next()}
+                    >
+                      <image iconName={"media-skip-forward-symbolic"} />
+                    </button>
+                  </box>
+                </box>
+
+                <box>
                   <button
                     cursor={pointer}
-                    visible={canGoPrevious}
-                    onClicked={() => activePlayer?.previous()}
+                    visible={fewSources}
+                    onClicked={selectNext}
+                    halign={Gtk.Align.CENTER}
+                    valign={Gtk.Align.CENTER}
                   >
-                    <image iconName={"media-skip-backward-symbolic"} />
-                  </button>
-                  <slider
-                    cssClasses={["timeline"]}
-                    hexpand
-                    cursor={pointer}
-                    value={position}
-                    max={length}
-                    onChangeValue={(self) =>
-                      activePlayer?.set_position(self.value)
-                    }
-                  />
-                  <button
-                    cursor={pointer}
-                    visible={canGoNext}
-                    onClicked={() => activePlayer?.next()}
-                  >
-                    <image iconName={"media-skip-forward-symbolic"} />
+                    <image iconName={"pan-end-symbolic"} />
                   </button>
                 </box>
               </box>

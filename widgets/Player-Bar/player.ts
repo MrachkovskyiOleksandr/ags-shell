@@ -14,11 +14,50 @@ export const [canGoNext, setCanGoNext] = createState(false)
 export const [canGoPrevious, setCanGoPrevious] = createState(false)
 export const [canSeek, setCanSeek] = createState(false)
 export const [identity, setIdentity] = createState("")
+export const [fewSources, setFewSources] = createState(true)
 
 export let activePlayer: AstalMpris.Player | undefined
 
+let selectedBusName: string | null = null
+let currentlyPlayingBusName: string | null = null
+let lastActiveBusName: string | null = null
+
 function update() {
-  const p = mpris.players.find((p) => p.available)
+  const playing = mpris.players.find(
+    (p) =>
+      p.available && p.playbackStatus === AstalMpris.PlaybackStatus.PLAYING,
+  )
+
+  if (playing) {
+    if (playing.busName !== currentlyPlayingBusName) {
+      selectedBusName = null
+      currentlyPlayingBusName = playing.busName
+    }
+    lastActiveBusName = playing.busName
+  } else {
+    currentlyPlayingBusName = null
+  }
+
+  const p =
+    (selectedBusName
+      ? mpris.players.find((p) => p.available && p.busName === selectedBusName)
+      : undefined) ??
+    playing ??
+    (lastActiveBusName
+      ? mpris.players.find(
+          (p) => p.available && p.busName === lastActiveBusName,
+        )
+      : undefined) ??
+    mpris.players.find((p) => p.available)
+
+    
+
+  if (p?.busName !== lastActiveBusName) {
+    setPosition(0)
+    setLength(0)
+    lastActiveBusName = p?.busName ?? null
+  }
+
   activePlayer = p
   setTitle(p?.title || "")
   setArtist(p?.artist || "")
@@ -31,6 +70,29 @@ function update() {
   setCanGoPrevious(p?.canGoPrevious || false)
   setCanSeek(p?.canSeek || false)
   setIdentity(p?.identity || "")
+
+  setFewSources(mpris.players.filter((p) => p.available).length > 1)
+}
+
+export function selectNext() {
+  const available = mpris.players.filter((p) => p.available)
+  if (available.length <= 1) return
+  const current = available.findIndex(
+    (p) => p.busName === activePlayer?.busName,
+  )
+  selectedBusName = available[(current + 1) % available.length].busName
+  update()
+}
+
+export function selectPrevious() {
+  const available = mpris.players.filter((p) => p.available)
+  if (available.length <= 1) return
+  const current = available.findIndex(
+    (p) => p.busName === activePlayer?.busName,
+  )
+  selectedBusName =
+    available[(current - 1 + available.length) % available.length].busName
+  update()
 }
 
 function connectPlayer(p: AstalMpris.Player) {
