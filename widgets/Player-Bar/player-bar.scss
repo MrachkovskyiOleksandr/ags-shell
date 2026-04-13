@@ -13,27 +13,16 @@ window.Player-Bar {
     padding: 4px 10px 6px;
 
     .player-popover {
-      * {
-        // border: 1px solid red;
-      }
-
       background-color: $surface_container_low;
       border: 1px solid $primary;
       border-radius: 12px;
-      padding: 10px 15px;
+      padding: 10px 5px;
       margin-top: 8px;
 
       min-height: 100px;
       min-width: 300px;
 
-      .cover {
-        // -gtk-icon-size: 50px;
-      }
-
       .info {
-        .title {
-        }
-
         .artist {
           font-weight: 500;
           opacity: 60%;
