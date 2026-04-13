@@ -123,20 +123,20 @@ window.Status-Bar {
           background: $surface_container_highest;
           border-radius: 7px;
           min-height: 26px;
-        }
 
-        trough highlight {
-          background-color: $primary;
-          border-radius: 7px;
+          highlight {
+            background-color: $primary;
+            border-radius: 7px;
 
-          &:hover {
-            opacity: 0.7;
-            transition: 0.1s all linear;
+            &:hover {
+              opacity: 0.7;
+              transition: 0.1s all linear;
+            }
           }
-        }
 
-        trough slider {
-          display: none;
+          slider {
+            display: none;
+          }
         }
       }
 

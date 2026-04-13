@@ -13,18 +13,70 @@ window.Player-Bar {
     padding: 4px 10px 6px;
 
     .player-popover {
+      * {
+        // border: 1px solid red;
+      }
+
       background-color: $surface_container_low;
       border: 1px solid $primary;
       border-radius: 12px;
-      padding: 6px;
+      padding: 10px 15px;
+      margin-top: 8px;
+
+      min-height: 100px;
+      min-width: 300px;
+
+      .cover {
+        // -gtk-icon-size: 50px;
+      }
+
+      .info {
+        .title {
+        }
+
+        .artist {
+          font-weight: 500;
+          opacity: 60%;
+        }
+      }
+
+      .play-pause {
+        background: $primary;
+        color: $surface_container_low;
+
+        border-radius: 8px;
+      }
     }
   }
 
-  tooltip {
-    background-color: $surface_container_low;
-    border: 1px solid $outline_variant;
-    border-radius: 12px;
-    padding: 6px;
-    margin-top: 15px;
+  scale {
+    trough {
+      background: $surface_container_highest;
+
+      border-radius: 8px;
+      min-height: 4px;
+
+      highlight {
+        background-color: $primary;
+        border-radius: 7px;
+      }
+
+      &:hover {
+        highlight {
+          opacity: 0.7;
+          transition: 0.1s all linear;
+        }
+      }
+
+      slider {
+        display: none;
+      }
+    }
+  }
+
+  button {
+    &:hover {
+      opacity: 0.7;
+    }
   }
 }

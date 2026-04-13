@@ -6,11 +6,15 @@ import { createEffect } from "ags"
 import {
   activePlayer,
   artist,
+  canGoNext,
+  canGoPrevious,
   coverArt,
+  isPlaying,
   length,
   position,
   title,
 } from "./Player-Bar/player"
+import { pointer } from "../utils/format"
 
 export default function PlayerBar(gdkmonitor: Gdk.Monitor) {
   const { LEFT, TOP } = Astal.WindowAnchor
@@ -45,46 +49,95 @@ export default function PlayerBar(gdkmonitor: Gdk.Monitor) {
         >
           <menubutton cssClasses={["player"]}>
             <label
-              tooltipText={title}
+              cursor={pointer}
               halign={Gtk.Align.START}
               ellipsize={Pango.EllipsizeMode.END}
               label={title}
               $={(self) => (labelRef = self)}
             />
-            <popover>
+            <popover hasArrow={false}>
               <box
                 cssClasses={["player-popover"]}
                 orientation={Gtk.Orientation.VERTICAL}
+                spacing={6}
               >
-                <box>
-                  <image visible={coverArt.as((c) => c != "" ? true : false)} file={coverArt} />
+                <box spacing={20}>
+                  <image
+                    halign={Gtk.Align.CENTER}
+                    valign={Gtk.Align.CENTER}
+                    cssClasses={["cover"]}
+                    visible={coverArt.as((c) => (c != "" ? true : false))}
+                    file={coverArt}
+                    pixel_size={60}
+                  />
                   <box
                     cssClasses={["info"]}
+                    vexpand
+                    hexpand
                     orientation={Gtk.Orientation.VERTICAL}
+                    valign={Gtk.Align.CENTER}
                   >
-                    <label label={title} />
-                    <label label={artist} />
+                    <label
+                      cssClasses={["title"]}
+                      wrap
+                      max_width_chars={30}
+                      xalign={0}
+                      yalign={1}
+                      label={title}
+                    />
+                    <label
+                      cssClasses={["artist"]}
+                      wrap
+                      max_width_chars={30}
+                      xalign={0}
+                      label={artist}
+                    />
                   </box>
+
+                  <button
+                    cssClasses={["play-pause"]}
+                    cursor={pointer}
+                    widthRequest={34}
+                    heightRequest={34}
+                    halign={Gtk.Align.CENTER}
+                    valign={Gtk.Align.CENTER}
+                    onClicked={() => activePlayer?.play_pause()}
+                  >
+                    <image
+                      iconName={isPlaying.as((p) =>
+                        p
+                          ? "media-playback-pause-symbolic"
+                          : "media-playback-start-symbolic",
+                      )}
+                    />
+                  </button>
                 </box>
-                <box cssClasses={["controls"]}>
-                  <button onClicked={() => activePlayer?.previous()}>
+                <box cssClasses={["controls"]} spacing={20}>
+                  <button
+                    cursor={pointer}
+                    visible={canGoPrevious}
+                    onClicked={() => activePlayer?.previous()}
+                  >
                     <image iconName={"media-skip-backward-symbolic"} />
                   </button>
-                  <button onClicked={() => activePlayer?.play_pause()}>
-                    <image iconName={"media-playback-pause-symbolic"} />
-                  </button>
-                  <button onClicked={() => activePlayer?.next()}>
+                  <slider
+                    cssClasses={["timeline"]}
+                    hexpand
+                    cursor={pointer}
+                    value={position}
+                    max={length}
+                    onChangeValue={(self) =>
+                      activePlayer?.set_position(self.value)
+                    }
+                  />
+                  <button
+                    cursor={pointer}
+                    visible={canGoNext}
+                    onClicked={() => activePlayer?.next()}
+                  >
                     <image iconName={"media-skip-forward-symbolic"} />
                   </button>
                 </box>
-                <slider
-                  cssClasses={["timeline"]}
-                  value={position}
-                  max={length}
-                  onChangeValue={(self) =>
-                    activePlayer?.set_position(self.value)
-                  }
-                />
               </box>
             </popover>
           </menubutton>
