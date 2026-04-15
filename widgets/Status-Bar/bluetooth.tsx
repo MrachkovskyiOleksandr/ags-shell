@@ -18,21 +18,12 @@ export default function Bluetooth() {
           <box orientation={Gtk.Orientation.VERTICAL}>
             <box cssClasses={["header"]} valign={Gtk.Align.CENTER}>
               <label label="Bluetooth" hexpand halign={Gtk.Align.START} />
-              <switch
+              <button
+                cssClasses={["refresh-btn"]}
+                visible={powered}
                 cursor={pointer}
                 hexpand
                 halign={Gtk.Align.END}
-                active={powered}
-                onNotifyActive={({ active }) => {
-                  if (active !== powered()) {
-                    adapter.set_powered(active)
-                  }
-                }}
-              />
-              <button
-                visible={powered}
-                cssClasses={["refresh-btn"]}
-                cursor={pointer}
                 onClicked={() => {
                   if (adapter.discovering) {
                     adapter.stop_discovery()
@@ -52,6 +43,15 @@ export default function Bluetooth() {
                   <label label="Refresh" />
                 </box>
               </button>
+              <switch
+                cursor={pointer}
+                active={powered}
+                onNotifyActive={({ active }) => {
+                  if (active !== powered()) {
+                    adapter.set_powered(active)
+                  }
+                }}
+              />
             </box>
 
             <box orientation={Gtk.Orientation.VERTICAL}>

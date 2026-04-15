@@ -23,7 +23,7 @@ export default function Wireless() {
               ? "network-wired-symbolic"
               : createBinding(wifi, "iconName")(),
           )
-          
+
           return (
             wifi && (
               <menubutton cursor={pointer}>
@@ -36,19 +36,10 @@ export default function Wireless() {
                       hexpand
                     >
                       <label label="WiFi" hexpand halign={Gtk.Align.START} />
-                      <switch
-                        hexpand
-                        halign={Gtk.Align.END}
-                        cursor={pointer}
-                        active={createBinding(network.wifi, "enabled")}
-                        onNotifyActive={({ active }) => {
-                          if (active != network.wifi.enabled)
-                            network.wifi.set_enabled(active)
-                        }}
-                      />
                       <button
                         visible={createBinding(wifi, "enabled")}
                         cssClasses={["refresh-btn"]}
+                        halign={Gtk.Align.END}
                         cursor={pointer}
                         onClicked={() => wifi.scan()}
                       >
@@ -62,8 +53,17 @@ export default function Wireless() {
                           <label label="Refresh" />
                         </box>
                       </button>
+                      <switch
+                        cursor={pointer}
+                        active={createBinding(network.wifi, "enabled")}
+                        onNotifyActive={({ active }) => {
+                          if (active != network.wifi.enabled)
+                            network.wifi.set_enabled(active)
+                        }}
+                      />
                     </box>
 
+                      
                     <For each={createBinding(wifi, "accessPoints")(sortedAP)}>
                       {(ap: AstalNetwork.AccessPoint) => {
                         return (

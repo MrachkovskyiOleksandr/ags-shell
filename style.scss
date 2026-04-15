@@ -89,6 +89,7 @@ window.Status-Bar {
 
       min-width: 300px;
 
+
       .header {
         margin: 0 6px 6px;
         padding: 2px 4px;
@@ -97,11 +98,11 @@ window.Status-Bar {
         border-bottom: 2px solid $outline_variant;
 
         .refresh-btn {
-          border-left: 2px solid $outline_variant;
+          border-right: 2px solid $outline_variant;
           font-size: 14px;
 
-          padding-left: 15px;
-          margin-left: 15px;
+          padding-right: 15px;
+          margin-right: 15px;
 
           box {
             image {
