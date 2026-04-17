@@ -1,7 +1,7 @@
 import AstalNetwork from "gi://AstalNetwork"
 import Pango from "gi://Pango?version=1.0"
 
-import { createBinding, With, For, createMemo } from "ags"
+import { createBinding, With, For, createMemo, createState, createComputed } from "ags"
 import { Gtk } from "ags/gtk4"
 
 import { openNcgui, handleApClick, network } from "../../utils/network"
@@ -18,6 +18,17 @@ export default function Wireless() {
     >
       <With value={wifi}>
         {(wifi) => {
+          const [stableAPs, setStableAPs] = createState(wifi.accessPoints)
+          let apTimeout: ReturnType<typeof setTimeout> | null = null
+
+          wifi.connect("notify::access-points", () => {
+            if (apTimeout) clearTimeout(apTimeout)
+            apTimeout = setTimeout(() => {
+              setStableAPs(wifi.accessPoints)
+              apTimeout = null
+            }, 500)
+          })
+
           const networkIcon = createMemo(() =>
             createBinding(network, "primary")() === AstalNetwork.Primary.WIRED
               ? "network-wired-symbolic"
@@ -63,8 +74,7 @@ export default function Wireless() {
                       />
                     </box>
 
-                      
-                    <For each={createBinding(wifi, "accessPoints")(sortedAP)}>
+                    <For each={createComputed(() => sortedAP(stableAPs()))}>
                       {(ap: AstalNetwork.AccessPoint) => {
                         return (
                           <box
