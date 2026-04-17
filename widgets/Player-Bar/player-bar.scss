@@ -9,7 +9,6 @@ window.Player-Bar {
     border-top: none;
     border-left: none;
     border-radius: 0 0 11px 0;
-
     padding: 4px 10px 6px;
 
     .player-popover {
@@ -17,10 +16,26 @@ window.Player-Bar {
       border: 1px solid $primary;
       border-radius: 12px;
       padding: 10px 5px;
-      margin-top: 8px;
+      margin-top: 5px;
 
       min-height: 100px;
       min-width: 300px;
+
+      .identify {
+        background: $primary;
+        padding: 0 2px;
+        border-radius: 6px;
+
+        label {
+          font-size: 14px;
+          color: $surface_container_low;
+        }
+      }
+
+      .cover {
+        border: 1px solid $surface_container_highest;
+        border-radius: 12px;
+      }
 
       .info {
         .artist {

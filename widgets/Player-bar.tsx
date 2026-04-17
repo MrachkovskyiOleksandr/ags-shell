@@ -8,8 +8,10 @@ import {
   artist,
   canGoNext,
   canGoPrevious,
+  canSeek,
   coverArt,
   fewSources,
+  identity,
   isPlaying,
   length,
   position,
@@ -66,6 +68,7 @@ export default function PlayerBar(gdkmonitor: Gdk.Monitor) {
               >
                 <box>
                   <button
+                    cssClasses={["source-switch"]}
                     cursor={pointer}
                     visible={fewSources}
                     onClicked={selectPrevious}
@@ -76,14 +79,18 @@ export default function PlayerBar(gdkmonitor: Gdk.Monitor) {
                   </button>
                 </box>
                 <box orientation={Gtk.Orientation.VERTICAL} spacing={6}>
+                  <box cssClasses={["identify"]} halign={Gtk.Align.START}>
+                    <label label={identity} />
+                  </box>
                   <box spacing={20}>
                     <image
+                      cssClasses={["cover"]}
                       halign={Gtk.Align.CENTER}
                       valign={Gtk.Align.CENTER}
-                      cssClasses={["cover"]}
                       visible={coverArt.as((c) => (c != "" ? true : false))}
                       file={coverArt}
                       pixel_size={60}
+                      overflow={Gtk.Overflow.HIDDEN}
                     />
                     <box
                       cssClasses={["info"]}
@@ -158,6 +165,7 @@ export default function PlayerBar(gdkmonitor: Gdk.Monitor) {
 
                 <box>
                   <button
+                    cssClasses={["source-switch"]}
                     cursor={pointer}
                     visible={fewSources}
                     onClicked={selectNext}
