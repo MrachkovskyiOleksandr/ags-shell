@@ -1,0 +1,15 @@
+window.Notification-Popup {
+  background-color: $surface_container_low;
+  color: $secondary;
+
+  border: 1px solid $primary;
+  border-radius: 12px;
+  
+  padding: 10px 5px;
+  margin-bottom: 150px;
+  
+
+  * {
+    // border: 1px solid red;
+  }
+}

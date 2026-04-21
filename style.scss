@@ -5,6 +5,7 @@ $bg-color: #{"@theme_bg_color"};
 @import "./colors.scss";
 @import "./widgets/Metrics-Bar/metrics-bar.scss";
 @import "./widgets/Player-Bar/player-bar.scss";
+@import "./widgets/Notification-Popup/notification-popup.scss";
 
 * {
   all: unset;

@@ -7,6 +7,7 @@ import StatusBar from "./widgets/Status-bar"
 import ncgui from "./widgets/ncgui/ncgui"
 import MetricsBar from "./widgets/Metrics-bar"
 import PlayerBar from "./widgets/Player-bar"
+import Notification from "./widgets/Notification-Popup"
 
 
 Gtk.IconTheme.get_for_display(Gdk.Display.get_default()!).add_search_path(
@@ -19,6 +20,7 @@ app.start({
     app.get_monitors().map(StatusBar)
     app.get_monitors().map(MetricsBar)
     app.get_monitors().map(PlayerBar)
+    app.get_monitors().map(Notification)
     ncgui()
   },
 })
