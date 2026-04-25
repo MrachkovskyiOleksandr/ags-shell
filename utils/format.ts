@@ -3,6 +3,7 @@ import AstalNetwork from "gi://AstalNetwork"
 
 import { createPoll } from "ags/time"
 import { Gdk } from "ags/gtk4"
+import { execAsync } from "ags/process"
 
 export const pointer = Gdk.Cursor.new_from_name("pointer", null)
 
@@ -37,4 +38,24 @@ export const networkSpeed = createPoll(
 
 export const sortedAP = (arr: Array<AstalNetwork.AccessPoint>) => {
   return arr.filter((ap) => !!ap.ssid).sort((a, b) => b.strength - a.strength)
+}
+
+export function sendNotification(
+  summary: string,
+  body: string,
+  icon: string,
+  time: number,
+  hints: Record<string, [string, string]> = {},
+) {
+  const hintArgs = Object.entries(hints)
+    .map(([k, [type, v]]) => `${type}:${k}:"${v}"`)
+    .join(" ")
+
+  execAsync(`notify-send \
+                      "${summary}" \
+                      "${body}" \
+                      -i "${icon}" \
+                      -h ${hintArgs} \
+                      -t ${time} \
+                      `)
 }
