@@ -2,6 +2,7 @@ import AstalNetwork from "gi://AstalNetwork"
 
 import { execAsync } from "ags/process"
 import { createBinding, createState } from "ags"
+import { sendNotification } from "./format"
 
 export const network = AstalNetwork.get_default()
 
@@ -21,6 +22,9 @@ export async function connect(ap: AstalNetwork.AccessPoint, pwd?: string) {
         : `nmcli d wifi connect "${ap.bssid}"`
       await execAsync(cmd)
       closeNcgui()
+      sendNotification(ap.ssid, "Connected", "network-wireless", 0, {
+        category: ["string", "system"],
+      })
       return
     } catch {
       attempts++
