@@ -6,7 +6,7 @@ import { createPoll } from "ags/time"
 import { Gtk } from "ags/gtk4"
 
 import { getBatteryIcon } from "../../utils/battery"
-import { pointer } from "../../utils/format"
+import { pointer, sendNotification } from "../../utils/format"
 
 export default function Battery() {
   const battery = AstalBattery.get_default()
@@ -79,9 +79,16 @@ export default function Battery() {
                         ? ["profile-btn", "active"]
                         : ["profile-btn"],
                     )}
-                    onClicked={() =>
+                    onClicked={() => {
                       powerProfiles.set_active_profile(profile.profile)
-                    }
+                      sendNotification(
+                        profileNames[profile.profile],
+                        "",
+                        "power-profile-" + profile.profile + "-symbolic",
+                        0,
+                        { category: ["string", "system"] },
+                      )
+                    }}
                   >
                     <box spacing={6}>
                       <image
