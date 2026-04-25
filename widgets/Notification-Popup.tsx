@@ -8,10 +8,19 @@ import {
   setVisible,
   summary,
   visible,
+  category,
+  value,
 } from "./Notification-Popup/notification"
+import { createEffect } from "ags"
 
 export default function Notification(gdkmonitor: Gdk.Monitor) {
   const { BOTTOM } = Astal.WindowAnchor
+
+  let winRef: Astal.Window
+
+  createEffect(() => {
+    winRef?.set_default_size(1, 1)
+  })
 
   return (
     <window
@@ -21,26 +30,42 @@ export default function Notification(gdkmonitor: Gdk.Monitor) {
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.IGNORE}
       anchor={BOTTOM}
+      marginBottom={150}
       application={app}
+      cursor={pointer}
+      $={(self) => {
+        winRef = self
+        const gesture = new Gtk.GestureClick()
+        gesture.connect("pressed", () => setVisible(false))
+        self.add_controller(gesture)
+      }}
     >
       <box
-        cursor={pointer}
-        $={(self) => {
-          const gesture = new Gtk.GestureClick()
-          gesture.connect("pressed", () => setVisible(false))
-          self.add_controller(gesture)
-        }}
+        orientation={category.as((c) =>
+          c ? Gtk.Orientation.VERTICAL : Gtk.Orientation.HORIZONTAL,
+        )}
+        cssClasses={category.as((c) => (c ? ["system"] : ["program"]))}
       >
-        {/* <image icon_name={appIcon} /> */}
-        <image iconName={icon} visible={icon.as((v) => v != "")} />
-        <box orientation={Gtk.Orientation.VERTICAL}>
+        <image iconName={icon} visible={icon.as((i) => i != "")} />
+        <box cssClasses={["content"]} orientation={Gtk.Orientation.VERTICAL}>
           <label
-            xalign={0}
+            cssClasses={["summary"]}
             label={summary}
             visible={summary.as((v) => v != "")}
           />
-          <label xalign={0} label={body} visible={body.as((v) => v != "")} />
-          {/* <label xalign={0} label={timeout.as((t) => `To expire - ${t}`)} /> */}
+          <label
+            cssClasses={["body"]}
+            label={body}
+            visible={body.as((v) => v != "")}
+            max_width_chars={20}
+          />
+          <slider
+            visible={value.as((v) => v != 0)}
+            hexpand
+            value={value}
+            heightRequest={20}
+            max={100}
+          />
         </box>
       </box>
     </window>

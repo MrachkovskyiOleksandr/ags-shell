@@ -2,14 +2,50 @@ window.Notification-Popup {
   background-color: $surface_container_low;
   color: $secondary;
 
-  border: 1px solid $primary;
+  border: 1px solid $outline;
   border-radius: 12px;
-  
-  padding: 10px 5px;
-  margin-bottom: 150px;
-  
 
-  * {
-    // border: 1px solid red;
+  padding: 10px 10px;
+
+  opacity: 0.8;
+  
+  .system {
+    min-width: 100px;
+    
+
+    image {
+      -gtk-icon-size: 50px;
+    }
+  }
+
+  .program {
+    image {
+      -gtk-icon-size: 30px
+    }
+  }
+
+  .content {
+    .summary {
+      margin-bottom: 5px;
+    }
+    .body {}
+  }
+
+  scale {
+    trough {
+      background: $surface_container_highest;
+
+      border-radius: 8px;
+      min-height: 8px;
+
+      highlight {
+        background-color: $primary;
+        border-radius: 7px;
+      }
+
+      slider {
+        display: none;
+      }
+    }
   }
 }
