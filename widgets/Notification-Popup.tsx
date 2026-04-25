@@ -56,11 +56,11 @@ export default function Notification(gdkmonitor: Gdk.Monitor) {
       >
         <image
           file={icon.as((v) => (isFilePath(v) ? v : ""))}
-          visible={icon.as(isFilePath)}
+          visible={icon.as((v) => isFilePath(v) && v != "")}
         />
         <image
           iconName={icon.as((v) => (isFilePath(v) ? "" : v))}
-          visible={icon.as((v) => !isFilePath(v))}
+          visible={icon.as((v) => !isFilePath(v) && v != "")}
         />
         <box cssClasses={["content"]} orientation={Gtk.Orientation.VERTICAL}>
           <label
@@ -69,12 +69,14 @@ export default function Notification(gdkmonitor: Gdk.Monitor) {
             xalign={asClass(category, 0.5, 0)}
             label={summary}
             visible={summary.as((v) => v != "")}
+            useMarkup
           />
           <label
             cssClasses={["body"]}
             label={body}
             xalign={asClass(category, 0.5, 0)}
             visible={body.as((v) => v != "")}
+            useMarkup
           />
           <slider
             visible={value.as((v) => v != 0)}
@@ -83,6 +85,7 @@ export default function Notification(gdkmonitor: Gdk.Monitor) {
             heightRequest={20}
             max={100}
           />
+
         </box>
       </box>
     </window>

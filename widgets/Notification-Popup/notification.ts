@@ -18,6 +18,8 @@ const activeTimers = new Map<string, ReturnType<typeof globalThis.setTimeout>>()
 
 let currentId: number | null = null
 
+const defaultExpireTime = 4000
+
 notifd.connect("notified", (_, id) => {
   const n = notifd.get_notification(id)
   const syncGroup = n?.hints
@@ -47,13 +49,13 @@ notifd.connect("notified", (_, id) => {
   setSummary(n?.summary || "")
   setBody(n?.body || "")
   setIcon(n?.image || "")
-  setTimeout(n?.expire_timeout || 3000)
+  setTimeout(n?.expire_timeout || defaultExpireTime)
   setHint(syncGroup || "")
   setValue(value || 0)
   setVisible(true)
 
   const expireMs =
-    n?.expire_timeout && n.expire_timeout > 0 ? n.expire_timeout : 3000
+    n?.expire_timeout && n.expire_timeout > 0 ? n.expire_timeout : defaultExpireTime
   const capturedId = id
 
   const timer = globalThis.setTimeout(() => {
