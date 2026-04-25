@@ -11,12 +11,16 @@ import {
   category,
   value,
 } from "./Notification-Popup/notification"
-import { createEffect } from "ags"
+import { Accessor, createEffect } from "ags"
+import Pango from "gi://Pango?version=1.0"
 
 export default function Notification(gdkmonitor: Gdk.Monitor) {
   const { BOTTOM } = Astal.WindowAnchor
 
   let winRef: Astal.Window
+
+  const asClass = (accessor: Accessor<boolean>, t: any, f: any) =>
+    accessor.as((v) => (v ? t : f))
 
   createEffect(() => {
     winRef?.set_default_size(1, 1)
@@ -41,23 +45,30 @@ export default function Notification(gdkmonitor: Gdk.Monitor) {
       }}
     >
       <box
-        orientation={category.as((c) =>
-          c ? Gtk.Orientation.VERTICAL : Gtk.Orientation.HORIZONTAL,
+        orientation={asClass(
+          category,
+          Gtk.Orientation.VERTICAL,
+          Gtk.Orientation.HORIZONTAL,
         )}
-        cssClasses={category.as((c) => (c ? ["system"] : ["program"]))}
+        cssClasses={asClass(category, ["system"], ["program"])}
+        spacing={6}
       >
         <image iconName={icon} visible={icon.as((i) => i != "")} />
         <box cssClasses={["content"]} orientation={Gtk.Orientation.VERTICAL}>
           <label
             cssClasses={["summary"]}
+            hexpand
+            xalign={asClass(category, 0.5, 0)}
             label={summary}
             visible={summary.as((v) => v != "")}
           />
           <label
             cssClasses={["body"]}
             label={body}
+            xalign={asClass(category, 0.5, 0)}
             visible={body.as((v) => v != "")}
-            max_width_chars={20}
+            widthRequest={250}
+            ellipsize={Pango.EllipsizeMode.END}
           />
           <slider
             visible={value.as((v) => v != 0)}

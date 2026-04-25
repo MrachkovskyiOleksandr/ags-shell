@@ -5,13 +5,12 @@ window.Notification-Popup {
   border: 1px solid $outline;
   border-radius: 12px;
 
-  padding: 10px 10px;
-
   opacity: 0.8;
   
   .system {
+    margin: 10px 10px 6px;
+
     min-width: 100px;
-    
 
     image {
       -gtk-icon-size: 50px;
@@ -19,16 +18,15 @@ window.Notification-Popup {
   }
 
   .program {
+    margin: 10px 5px;
+
+    .body {
+      font-weight: 500;
+    }
+
     image {
       -gtk-icon-size: 30px
     }
-  }
-
-  .content {
-    .summary {
-      margin-bottom: 5px;
-    }
-    .body {}
   }
 
   scale {
