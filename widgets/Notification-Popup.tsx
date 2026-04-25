@@ -11,8 +11,7 @@ import {
   category,
   value,
 } from "./Notification-Popup/notification"
-import { Accessor, createEffect } from "ags"
-import Pango from "gi://Pango?version=1.0"
+import { Accessor, createEffect, createMemo } from "ags"
 
 export default function Notification(gdkmonitor: Gdk.Monitor) {
   const { BOTTOM } = Astal.WindowAnchor
@@ -21,6 +20,8 @@ export default function Notification(gdkmonitor: Gdk.Monitor) {
 
   const asClass = (accessor: Accessor<boolean>, t: any, f: any) =>
     accessor.as((v) => (v ? t : f))
+
+  const isFilePath = (v: string) => v.startsWith("/") || v.startsWith("~")
 
   createEffect(() => {
     winRef?.set_default_size(1, 1)
@@ -53,7 +54,14 @@ export default function Notification(gdkmonitor: Gdk.Monitor) {
         cssClasses={asClass(category, ["system"], ["program"])}
         spacing={6}
       >
-        <image iconName={icon} visible={icon.as((i) => i != "")} />
+        <image
+          file={icon.as((v) => (isFilePath(v) ? v : ""))}
+          visible={icon.as(isFilePath)}
+        />
+        <image
+          iconName={icon.as((v) => (isFilePath(v) ? "" : v))}
+          visible={icon.as((v) => !isFilePath(v))}
+        />
         <box cssClasses={["content"]} orientation={Gtk.Orientation.VERTICAL}>
           <label
             cssClasses={["summary"]}
