@@ -67,8 +67,6 @@ export default function Notification(gdkmonitor: Gdk.Monitor) {
             label={body}
             xalign={asClass(category, 0.5, 0)}
             visible={body.as((v) => v != "")}
-            widthRequest={250}
-            ellipsize={Pango.EllipsizeMode.END}
           />
           <slider
             visible={value.as((v) => v != 0)}
