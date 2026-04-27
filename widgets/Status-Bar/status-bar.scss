@@ -1,0 +1,308 @@
+.center-box {
+    background-color: black;
+    border: 1px solid $outline;
+    border-top: none;
+    border-radius: 0 0 11px 11px;
+
+    min-width: 500px;
+
+    padding: 4px 10px 6px;
+
+    .clock-box,
+    .audio-box,
+    .bluetooth-box,
+    .network-box,
+    .battery-box {
+      padding: 0 4px;
+    }
+
+    .workspaces-box {
+      .workspace {
+        min-width: 23px;
+        border-radius: 50%;
+
+        background: radial-gradient(
+          circle,
+          $surface_container 40%,
+          transparent 40%
+        );
+        color: transparent;
+
+        transition: 0.3s all linear;
+
+        &.active {
+          background: radial-gradient(circle, $primary 100%, transparent 100%);
+        }
+
+        &.urgent {
+          animation: blinking 3s ease-in-out infinite;
+        }
+
+        &:hover {
+          background: radial-gradient(
+            circle,
+            $primary_container 100%,
+            transparent 100%
+          );
+          transition: 0.3s all linear;
+        }
+      }
+    }
+
+    popover {
+      background-color: $surface_container_low;
+      border: 1px solid $primary;
+      border-radius: 12px;
+      padding: 6px;
+      margin-top: 15px;
+
+      min-width: 300px;
+
+
+      .header {
+        margin: 0 6px 6px;
+        padding: 2px 4px;
+
+        padding-bottom: 6px;
+        border-bottom: 2px solid $outline_variant;
+
+        .refresh-btn {
+          border-right: 2px solid $outline_variant;
+          font-size: 14px;
+
+          padding-right: 15px;
+          margin-right: 15px;
+
+          box {
+            image {
+              color: $primary;
+            }
+
+            &:hover {
+              opacity: 0.7;
+              transition: 0.1s all linear;
+            }
+          }
+        }
+      }
+
+      scale {
+        min-width: 200px;
+
+        trough {
+          background: $surface_container_highest;
+          border-radius: 7px;
+          min-height: 26px;
+
+          highlight {
+            background-color: $primary;
+            border-radius: 7px;
+
+            &:hover {
+              opacity: 0.7;
+              transition: 0.1s all linear;
+            }
+          }
+
+          slider {
+            display: none;
+          }
+        }
+      }
+
+      .mute-button {
+        padding: 3px;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        -gtk-icon-size: 23px;
+        transition: 0.3s all linear;
+
+        &:hover {
+          background: $primary_container;
+          color: $on_primary_container;
+        }
+
+        &.muted {
+          color: $error;
+        }
+      }
+
+      .wifi-list-item.no-hover {
+        background: transparent;
+        color: $secondary;
+      }
+
+      .wifi-list-item,
+      .bluetooth-list-item {
+        padding: 4px 6px;
+        transition: 0.1s all linear;
+
+        .edit-btn,
+        .active-icon {
+          -gtk-icon-size: 18px;
+        }
+
+        .edit-btn {
+          color: transparent;
+          transition: 0.1s all linear;
+          padding-left: 10px;
+        }
+
+        &:hover {
+          background: $primary_container;
+          border-radius: 7px;
+          color: $on_primary_container;
+
+          transition: 0.1s all linear;
+
+          .edit-btn {
+            color: $on_primary_container;
+            transition: 0.1s all linear;
+
+            &:hover {
+              color: $primary;
+            }
+          }
+        }
+
+        &.active {
+          background: $surface_container_high;
+          border-left: 2px solid $primary;
+        }
+
+        &.error {
+          color: $error;
+          border: 1px solid $error_container;
+        }
+
+        &.connecting {
+          color: $tertiary;
+          border-color: $tertiary_container;
+        }
+
+        .frequency-label,
+        .battery-label {
+          color: $outline;
+          font-size: 13px;
+        }
+      }
+    }
+
+    .power-profile-popover {
+      min-width: 150px;
+
+      .header {
+        margin-bottom: 0;
+      }
+
+      .profile-btn {
+        padding: 4px 6px;
+        transition: 0.1s all linear;
+
+        &:hover {
+          background: $primary_container;
+          border-radius: 7px;
+          color: $on_primary_container;
+
+          transition: 0.1s all linear;
+        }
+      }
+
+      .active {
+        background: $surface_container_high;
+        border-left: 2px solid $primary;
+      }
+    }
+
+    switch {
+      min-width: 48px;
+      min-height: 24px;
+      border-radius: 12px;
+      border: none;
+      background-color: $surface_container_highest;
+
+      &:checked {
+        background-color: $primary;
+
+        slider {
+          background: $on_primary;
+        }
+      }
+
+      &:hover {
+        opacity: 0.8;
+        transition: 0.1s all linear;
+      }
+
+      > slider {
+        min-width: 20px;
+        min-height: 20px;
+        margin: 2px;
+        border-radius: 50%;
+        background-color: $outline;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .spinning {
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes blinking {
+    0%,
+    100% {
+      background: radial-gradient(
+        circle,
+        $surface_container 40%,
+        $surface_container 40%,
+        transparent 40%
+      );
+    }
+    50% {
+      background: radial-gradient(
+        circle,
+        $surface_container 40%,
+        $error 50%,
+        transparent 60%
+      );
+    }
+  }
+
+  calendar {
+    button,
+    label {
+      &:hover {
+        background-color: $primary_container;
+        border-radius: 5px;
+        color: $on_primary_container;
+      }
+    }
+
+    .other-month {
+      color: $surface_variant;
+    }
+
+    .today {
+      background-color: $primary;
+      border-radius: 5px;
+      color: $on_primary;
+    }
+  }
+
+  tooltip {
+    background-color: $surface_container_low;
+    border: 1px solid $outline_variant;
+    border-radius: 12px;
+    padding: 6px;
+    margin-top: 15px;
+  }

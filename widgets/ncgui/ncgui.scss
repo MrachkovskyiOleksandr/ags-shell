@@ -1,0 +1,121 @@
+.ncgui-window {
+  background-color: $surface_container_low;
+  border: 1px solid $outline;
+  border-radius: 12px;
+  padding: 12px;
+
+  &:hover {
+    border-color: $primary;
+  }
+
+  color: $secondary;
+  font-family: "Adwaita Sans Nerd Font";
+  font-size: 16px;
+  font-weight: bold;
+
+  .header {
+    border-bottom: 2px solid $outline_variant;
+    padding: 0 4px 6px;
+
+    .frequency-label {
+      color: $secondary_container;
+      font-size: 13px;
+    }
+  }
+
+  button {
+    border: 1px solid $outline_variant;
+    border-radius: 12px;
+    padding: 6px 10px;
+
+    &:hover {
+      background: $primary_container;
+      color: $on_primary_container;
+      border-color: $primary;
+    }
+  }
+
+  .password-box {
+    padding: 0 4px;
+
+    entry {
+      background: $surface_container;
+      color: $on_surface;
+      border-bottom: 1px solid $outline;
+      padding: 6px;
+      min-width: 200px;
+
+      margin: 7px 4px 6px 6px;
+
+      &:focus {
+        border-bottom: 2px solid $primary;
+      }
+    }
+
+    button.toggle {
+      min-height: 0;
+      min-width: 0;
+      padding: 0;
+      margin: 0;
+      border: none;
+      background: transparent;
+
+      color: $primary;
+
+      image {
+        opacity: 0.2;
+        -gtk-icon-size: 23px;
+      }
+
+      &:checked {
+        color: $primary;
+
+        image {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .bottom-buttons-box {
+    margin-top: 8px;
+  }
+
+  .forget,
+  .disconnect {
+    border-color: $error;
+    color: $error;
+    font-size: 13px;
+
+    &:hover {
+      background: $error_container;
+      color: $on_error_container;
+      border-color: $error;
+    }
+  }
+
+  @keyframes bounce {
+    0%,
+    100% {
+      margin-top: 0;
+    }
+    50% {
+      margin-top: -6px;
+    }
+  }
+
+  .dot {
+    animation: bounce 0.8s ease-in-out infinite;
+    color: $tertiary;
+  }
+
+  .dot-1 {
+    animation-delay: 0s;
+  }
+  .dot-2 {
+    animation-delay: 0.2s;
+  }
+  .dot-3 {
+    animation-delay: 0.4s;
+  }
+}
