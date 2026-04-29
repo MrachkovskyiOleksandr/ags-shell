@@ -12,7 +12,7 @@ window.Player-Bar {
     padding: 4px 10px 6px;
 
     .player-popover {
-      background-color: $surface_container_low;
+      background: $background;
       border: 1px solid $primary;
       border-radius: 12px;
       padding: 10px 5px;
