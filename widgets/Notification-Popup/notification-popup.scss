@@ -1,12 +1,10 @@
 window.Notification-Popup {
-  background-color: $surface_container_low;
+  background-color: rgba($background, 0.6);
   color: $secondary;
 
   border: 1px solid $outline;
   border-radius: 12px;
 
-  opacity: 0.85;
-  
   .system {
     margin: 10px 10px 5px;
 
