@@ -16,6 +16,7 @@ export default function Clock({ format = "%A - %H:%M" }) {
       <label label={time} />
       <popover
         cssClasses={["popover"]}
+        hasArrow={false}
       >
         <Gtk.Calendar />
       </popover>

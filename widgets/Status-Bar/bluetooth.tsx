@@ -6,6 +6,7 @@ import { Gtk } from "ags/gtk4"
 import { timeout } from "ags/time"
 import { pointer } from "../../utils/format"
 import { adapter, bluetoothIcon, powered, sortedDevices } from "../../utils/bluetooth"
+import { MyPopover } from "../../utils/custom-elements"
 
 export default function Bluetooth() {
 
@@ -14,7 +15,7 @@ export default function Bluetooth() {
       <menubutton cursor={pointer}>
         <image iconName={bluetoothIcon} />
 
-        <popover hasArrow={false}>
+        <MyPopover hasArrow={false} yoffset={14}>
           <box orientation={Gtk.Orientation.VERTICAL}>
             <box cssClasses={["header"]} valign={Gtk.Align.CENTER}>
               <label label="Bluetooth" hexpand halign={Gtk.Align.START} />
@@ -98,7 +99,7 @@ export default function Bluetooth() {
               </For>
             </box>
           </box>
-        </popover>
+        </MyPopover>
       </menubutton>
     </box>
   )

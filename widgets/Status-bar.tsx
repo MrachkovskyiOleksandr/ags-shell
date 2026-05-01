@@ -5,7 +5,7 @@ import Battery from "./Status-Bar/battery"
 import Clock from "./Status-Bar/clock"
 import Wireless from "./Status-Bar/network"
 import Bluetooth from "./Status-Bar/bluetooth"
-import Audio from "./Status-Bar/audio"
+import Control from "./Status-Bar/control"
 import Workspaces from "./Status-Bar/workspaces"
 
 export default function StatusBar(gdkmonitor: Gdk.Monitor) {
@@ -26,10 +26,12 @@ export default function StatusBar(gdkmonitor: Gdk.Monitor) {
         <box hexpand />
         <Workspaces />
         <box hexpand />
-        <Audio />
-        <Bluetooth />
-        <Wireless />
-        <Battery />
+        <box spacing={8}>
+          <Control />
+          <Bluetooth />
+          <Wireless />
+          <Battery />
+        </box>
       </box>
     </window>
   )

@@ -20,6 +20,7 @@ import {
   title,
 } from "./Player-Bar/player"
 import { pointer } from "../utils/format"
+import { MyPopover } from "../utils/custom-elements"
 
 export default function PlayerBar(gdkmonitor: Gdk.Monitor) {
   const { LEFT, TOP } = Astal.WindowAnchor
@@ -60,7 +61,7 @@ export default function PlayerBar(gdkmonitor: Gdk.Monitor) {
               label={title}
               $={(self) => (labelRef = self)}
             />
-            <popover hasArrow={false}>
+            <MyPopover hasArrow={false} yoffset={7}>
               <box
                 cssClasses={["player-popover"]}
                 orientation={Gtk.Orientation.HORIZONTAL}
@@ -176,7 +177,7 @@ export default function PlayerBar(gdkmonitor: Gdk.Monitor) {
                   </button>
                 </box>
               </box>
-            </popover>
+            </MyPopover>
           </menubutton>
         </revealer>
       </box>

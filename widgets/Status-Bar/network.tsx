@@ -1,11 +1,19 @@
 import AstalNetwork from "gi://AstalNetwork"
 import Pango from "gi://Pango?version=1.0"
 
-import { createBinding, With, For, createMemo, createState, createComputed } from "ags"
+import {
+  createBinding,
+  With,
+  For,
+  createMemo,
+  createState,
+  createComputed,
+} from "ags"
 import { Gtk } from "ags/gtk4"
 
 import { openNcgui, handleApClick, network } from "../../utils/network"
 import { networkSpeed, pointer, sortedAP } from "../../utils/format"
+import { MyPopover } from "../../utils/custom-elements"
 
 export default function Wireless() {
   const wifi = createBinding(network, "wifi")
@@ -39,7 +47,7 @@ export default function Wireless() {
             wifi && (
               <menubutton cursor={pointer}>
                 <image iconName={networkIcon} />
-                <popover hasArrow={false}>
+                <MyPopover hasArrow={false} yoffset={14}>
                   <box orientation={Gtk.Orientation.VERTICAL}>
                     <box
                       cssClasses={["header"]}
@@ -152,7 +160,7 @@ export default function Wireless() {
                       }}
                     </For>
                   </box>
-                </popover>
+                </MyPopover>
               </menubutton>
             )
           )
