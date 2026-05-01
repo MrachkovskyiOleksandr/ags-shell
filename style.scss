@@ -23,3 +23,10 @@ window.Player-Bar {
   background: transparent;
   color: $secondary;
 }
+
+tooltip {
+  background: rgba($surface_container_low, 0.8);
+  border: 1px solid $outline_variant;
+  border-radius: 12px;
+  padding: 6px;
+}
