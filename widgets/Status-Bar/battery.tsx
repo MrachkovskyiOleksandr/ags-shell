@@ -63,7 +63,7 @@ export default function Battery() {
           <image iconName={icon} />
           <label label={percent} />
         </box>
-        <MyPopover hasArrow={false} cssClasses={["power-profile-MyPopover"]} yoffset={14}>
+        <MyPopover hasArrow={false} cssClasses={["power-profile-popover"]} yoffset={14}>
           <box orientation={Gtk.Orientation.VERTICAL} spacing={6}>
             <label cssClasses={["header"]} label="Power profile" />
             <box spacing={4} orientation={Gtk.Orientation.VERTICAL}>
