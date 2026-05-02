@@ -41,24 +41,6 @@
         }
       }
     }
-
-    .mute-button,
-    .night-light-button {
-      padding: 3px;
-      border: 1px solid transparent;
-      border-radius: 7px;
-      -gtk-icon-size: 23px;
-      transition: 0.3s all linear;
-
-      &:hover {
-        background: $primary_container;
-        color: $on_primary_container;
-      }
-
-      &.muted {
-        color: $error;
-      }
-    }
   }
 
   .workspaces-box {
@@ -127,6 +109,28 @@
           }
         }
       }
+    }
+
+    .mute-button,
+    .night-light-button {
+      padding: 3px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      -gtk-icon-size: 23px;
+      transition: 0.3s all linear;
+
+      &:hover {
+        background: $primary_container;
+        color: $on_primary_container;
+      }
+
+      &.muted {
+        color: $error;
+      }
+    }
+
+    .percentage {
+      min-width: 30px;
     }
 
     .wifi-list-item.no-hover {

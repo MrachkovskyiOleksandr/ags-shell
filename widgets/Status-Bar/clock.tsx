@@ -2,6 +2,7 @@ import { createPoll } from "ags/time"
 import GLib from "gi://GLib?version=2.0"
 import { Gtk } from "ags/gtk4"
 import { pointer } from "../../utils/format"
+import { MyPopover } from "../../utils/custom-elements"
 
 export default function Clock({ format = "%A - %H:%M" }) {
   const time = createPoll("", 1000, () => {
@@ -14,12 +15,13 @@ export default function Clock({ format = "%A - %H:%M" }) {
       cssClasses={["clock-box"]}
     >
       <label label={time} />
-      <popover
+      <MyPopover
         cssClasses={["popover"]}
         hasArrow={false}
+        yoffset={14}
       >
         <Gtk.Calendar />
-      </popover>
+      </MyPopover>
     </menubutton>
   )
 }
