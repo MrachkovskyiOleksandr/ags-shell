@@ -112,7 +112,7 @@
     }
 
     .mute-button,
-    .night-light-button {
+    .night-light {
       padding: 3px;
       border: 1px solid transparent;
       border-radius: 7px;
@@ -131,6 +131,14 @@
 
     .percentage {
       min-width: 30px;
+    }
+
+    .night-light-slider {
+      color: $secondary;
+
+      .percentage{
+        min-width: 55px;
+      }
     }
 
     .wifi-list-item.no-hover {

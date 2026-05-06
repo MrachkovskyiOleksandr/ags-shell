@@ -1,10 +1,16 @@
-import { createBinding, Accessor } from "ags"
+import { createBinding, Accessor, createState } from "ags"
 import { Gtk } from "ags/gtk4"
 import { pointer } from "../../utils/format"
 import { audioIcon, device } from "../../utils/audio"
 import { execAsync } from "ags/process"
 import { brightness, max, percentage } from "../../utils/display"
 import { MyPopover } from "../../utils/custom-elements"
+
+const savedTemp = await execAsync("hyprctl hyprsunset profile")
+  .then((out) => Number(out.match(/temperature:\s*(\d+)/)?.[1] ?? 6500))
+  .catch(() => 6500)
+
+const [temp, setTemp] = createState(savedTemp)
 
 export default function Control() {
   const volume = createBinding(device, "volume").as((b) => {
@@ -68,9 +74,31 @@ export default function Control() {
                   self.set_increments(5, 5)
                 }}
               />
-              <button cssClasses={["night-light-button"]}>
+              <menubutton cssClasses={["night-light"]}>
                 <image iconName={"night-light"} />
-              </button>
+                <MyPopover hasArrow={false} yoffset={8} xoffset={-134}>
+                  <box cssClasses={["night-light-slider"]}>
+                    <label
+                      cssClasses={["percentage"]}
+                      label={temp.as((t) => `${Math.floor(t)}K`)}
+                    />
+                    <slider
+                      hexpand
+                      min={1000}
+                      max={6500}
+                      value={temp}
+                      onChangeValue={(self, _scrollType, value) => {
+                        setTemp(value)
+                        void execAsync(
+                          `hyprctl hyprsunset temperature ${value}`,
+                        ).catch(() => {
+                          console.log("bruh")
+                        })
+                      }}
+                    />
+                  </box>
+                </MyPopover>
+              </menubutton>
             </box>
           </box>
         </MyPopover>
